@@ -164,6 +164,22 @@
       background: rgba(255,255,255,0.7);
       padding: 4px 10px; border-radius: 12px;
     }
+    .beta-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 4px 10px; border-radius: 999px;
+      background: rgba(245,158,11,0.12);
+      color: #b45309;
+      font-size: 0.72rem; font-weight: 800;
+      letter-spacing: 0.05em;
+      border: 1px solid rgba(245,158,11,0.2);
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+    .dev-credit {
+      position: absolute; bottom: 14px; right: 18px;
+      font-size: 0.72rem; color: rgba(110,110,115,0.5);
+      font-weight: 400;
+    }
     .status-row { display: flex; justify-content: center; margin-bottom: 16px; }
     .status-badge {
       display: inline-flex; align-items: center; gap: 8px;
@@ -226,8 +242,9 @@
 <body>
 <div class="phone-shell">
   <div class="view-container">
+    <div class="dev-credit">현재 개발 중인 서비스입니다 - 개발자· 김동원</div>
     <div class="topbar">
-      <div class="brand">ipsi<span>PASS</span></div>
+      <div class="brand">ipsi<span>PASS</span><span class="beta-badge">BETA</span></div>
       <div class="step-chip" id="stepChip">STEP 1</div>
     </div>
 
