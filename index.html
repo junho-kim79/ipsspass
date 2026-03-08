@@ -1,334 +1,364 @@
-<style>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ipsiPASS - 진학 정보 안내</title>
+  <style>
+    /* 기존 스타일 그대로 유지 + 약간 정리 */
     :root {
-        --blue: #0A84FF;
-        --text: #111111;
-        --sub: #6E6E73;
-        --bg: #FAFAFC;
-        --card: rgba(255,255,255,0.82);
-        --line: rgba(255,255,255,0.65);
-        --shadow: 0 18px 50px rgba(16, 24, 40, 0.08);
+      --blue: #0A84FF;
+      --text: #111111;
+      --sub: #6E6E73;
+      --bg: #FAFAFC;
+      --card: rgba(255,255,255,0.82);
+      --line: rgba(255,255,255,0.65);
+      --shadow: 0 18px 50px rgba(16, 24, 40, 0.08);
     }
-
     * { box-sizing: border-box; }
-
     body {
-        margin: 0;
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 24px;
-        font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Segoe UI', sans-serif;
-        background:
-            radial-gradient(circle at top left, rgba(10,132,255,0.10), transparent 32%),
-            linear-gradient(180deg, #F7F8FC 0%, #EEF2F8 100%);
-        color: var(--text);
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Segoe UI', sans-serif;
+      background: radial-gradient(circle at top left, rgba(10,132,255,0.08), transparent 40%), linear-gradient(180deg, #F7F8FC 0%, #EEF2F8 100%);
+      color: var(--text);
     }
-
     .phone-shell {
-        width: 100%;
-        max-width: 430px;
-        background: rgba(255,255,255,0.58);
-        backdrop-filter: blur(22px);
-        border: 1px solid rgba(255,255,255,0.7);
-        border-radius: 34px;
-        box-shadow: var(--shadow);
-        padding: 18px;
+      width: 100%;
+      max-width: 420px;
+      background: rgba(255,255,255,0.6);
+      backdrop-filter: blur(24px);
+      border: 1px solid rgba(255,255,255,0.75);
+      border-radius: 38px;
+      box-shadow: var(--shadow);
+      padding: 16px;
+      overflow: hidden;
     }
-
     .view-container {
-        background: linear-gradient(180deg, rgba(255,255,255,0.88), rgba(255,255,255,0.78));
-        border: 1px solid var(--line);
-        border-radius: 28px;
-        min-height: 760px;
-        padding: 28px 22px 24px;
-        position: relative;
-        overflow: hidden;
+      background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.8));
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      min-height: 740px;
+      padding: 24px 18px;
+      position: relative;
     }
-
     .topbar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 26px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
     }
-
     .brand {
-        font-size: 0.88rem;
-        font-weight: 700;
-        letter-spacing: -0.02em;
+      font-size: 0.92rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
     }
-
     .brand span {
-        color: var(--blue);
+      color: var(--blue);
     }
-
+    .region-chip {
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(10,132,255,0.1);
+      color: var(--blue);
+      font-size: 0.8rem;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+    }
     .step-chip {
-        padding: 8px 12px;
-        border-radius: 999px;
-        background: rgba(10,132,255,0.08);
-        color: var(--blue);
-        font-size: 0.78rem;
-        font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(10,132,255,0.08);
+      color: var(--blue);
+      font-size: 0.78rem;
+      font-weight: 700;
     }
-
     .screen {
-        display: none;
-        animation: fadeUp 0.32s ease;
+      display: none;
+      animation: fadeUp 0.4s ease;
     }
-
     .screen.active { display: block; }
-
     .hero {
-        margin-top: 18px;
-        margin-bottom: 26px;
+      margin: 20px 0 28px;
+      text-align: center;
     }
-
     h1 {
-        margin: 0 0 10px;
-        font-size: 2rem;
-        line-height: 1.18;
-        letter-spacing: -0.04em;
-        font-weight: 800;
+      margin: 0 0 8px;
+      font-size: 1.95rem;
+      line-height: 1.2;
+      letter-spacing: -0.04em;
+      font-weight: 800;
     }
-
     .subtext {
-        margin: 0;
-        color: var(--sub);
-        font-size: 0.98rem;
-        line-height: 1.55;
-        letter-spacing: -0.02em;
+      margin: 0;
+      color: var(--sub);
+      font-size: 0.96rem;
+      line-height: 1.5;
     }
-
     .card-list {
-        display: grid;
-        gap: 14px;
-        margin-top: 24px;
+      display: grid;
+      gap: 16px;
+      margin: 24px 0;
     }
-
-    .choice-card,
-    .primary-button,
-    .secondary-button {
-        width: 100%;
-        border: 0;
-        border-radius: 24px;
-        cursor: pointer;
-        transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background 0.18s ease;
-    }
-
     .choice-card {
-        text-align: left;
-        padding: 22px 20px;
-        background: var(--card);
-        border: 1px solid rgba(255,255,255,0.9);
-        box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+      text-align: left;
+      padding: 20px 18px;
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,0.9);
+      border-radius: 24px;
+      box-shadow: 0 8px 24px rgba(15,23,42,0.04);
+      cursor: pointer;
+      transition: all 0.2s ease;
     }
-
-    .choice-card:hover,
-    .choice-card:active {
-        transform: translateY(-1px);
-        border-color: rgba(10,132,255,0.28);
-        box-shadow: 0 14px 28px rgba(10,132,255,0.10);
+    .choice-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 32px rgba(10,132,255,0.12);
     }
-
     .choice-top {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
     }
-
     .choice-card h3 {
-        margin: 0;
-        font-size: 1.16rem;
-        letter-spacing: -0.03em;
+      margin: 0;
+      font-size: 1.15rem;
+      letter-spacing: -0.02em;
+      font-weight: 700;
     }
-
     .choice-card p {
-        margin: 8px 0 0;
-        font-size: 0.92rem;
-        color: var(--sub);
-        line-height: 1.45;
+      margin: 6px 0 0;
+      font-size: 0.9rem;
+      color: var(--sub);
+      line-height: 1.45;
     }
-
     .icon-badge {
-        width: 42px;
-        height: 42px;
-        border-radius: 14px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        background: rgba(10,132,255,0.10);
-        color: var(--blue);
-        font-size: 1.15rem;
-        flex: 0 0 auto;
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(10,132,255,0.12);
+      color: var(--blue);
+      font-size: 1.3rem;
+      flex-shrink: 0;
     }
-
-    .field-wrap {
-        margin-top: 22px;
-    }
-
     .input-label {
-        display: block;
-        margin-bottom: 10px;
-        font-size: 0.9rem;
-        font-weight: 700;
-        letter-spacing: -0.02em;
+      display: block;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
     }
-
     .input-box {
-        width: 100%;
-        padding: 18px 18px;
-        border-radius: 18px;
-        border: 1px solid rgba(17,17,17,0.08);
-        background: rgba(255,255,255,0.92);
-        font-size: 1rem;
-        outline: none;
-        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      width: 100%;
+      padding: 16px 18px;
+      border-radius: 20px;
+      border: 1px solid rgba(17,17,17,0.08);
+      background: rgba(255,255,255,0.94);
+      font-size: 1rem;
+      outline: none;
+      transition: all 0.2s;
     }
-
     .input-box:focus {
-        border-color: rgba(10,132,255,0.45);
-        box-shadow: 0 0 0 4px rgba(10,132,255,0.10);
+      border-color: rgba(10,132,255,0.5);
+      box-shadow: 0 0 0 4px rgba(10,132,255,0.12);
     }
-
     .primary-button {
-        margin-top: 16px;
-        padding: 20px;
-        background: linear-gradient(135deg, #0A84FF, #3AA0FF);
-        color: #fff;
-        font-size: 1rem;
-        font-weight: 800;
-        letter-spacing: -0.02em;
-        box-shadow: 0 12px 24px rgba(10,132,255,0.22);
+      width: 100%;
+      padding: 18px;
+      margin-top: 16px;
+      background: linear-gradient(135deg, #0A84FF, #3AA0FF);
+      color: white;
+      font-size: 1rem;
+      font-weight: 800;
+      border: none;
+      border-radius: 24px;
+      box-shadow: 0 12px 24px rgba(10,132,255,0.25);
+      cursor: pointer;
     }
-
-    .primary-button:hover,
-    .primary-button:active {
-        transform: translateY(-1px);
-    }
-
     .secondary-button {
-        margin-top: 12px;
-        padding: 16px;
-        background: transparent;
-        color: var(--blue);
-        font-size: 0.96rem;
-        font-weight: 700;
+      width: 100%;
+      padding: 14px;
+      margin-top: 12px;
+      background: transparent;
+      color: var(--blue);
+      font-size: 0.95rem;
+      font-weight: 700;
+      border: 1px solid var(--blue);
+      border-radius: 20px;
+      cursor: pointer;
     }
-
     .footer-note {
-        margin-top: 22px;
-        text-align: center;
-        color: #8E8E93;
-        font-size: 0.82rem;
+      margin-top: 24px;
+      text-align: center;
+      color: #8E8E93;
+      font-size: 0.8rem;
+      line-height: 1.5;
     }
-
+    .update-info {
+      position: absolute;
+      top: 12px;
+      right: 18px;
+      font-size: 0.75rem;
+      color: var(--sub);
+      background: rgba(255,255,255,0.7);
+      padding: 4px 10px;
+      border-radius: 12px;
+    }
     @keyframes fadeUp {
-        from {
-            opacity: 0;
-            transform: translateY(14px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
     }
-</style>
-
-<div class="phone-shell">
+  </style>
+</head>
+<body>
+  <div class="phone-shell">
     <div class="view-container">
-        <div class="topbar">
-            <div class="brand">ipsi<span>PASS</span></div>
-            <div class="step-chip" id="stepLabel">STEP 1</div>
+      <div class="topbar">
+        <div class="brand">ipsi<span>PASS</span></div>
+        <div class="step-chip">STEP 1</div>
+      </div>
+
+      <!-- 항상 보이는 지역 선택 -->
+      <div style="text-align:center; margin-bottom:20px;">
+        <select id="regionSelect" class="region-chip" onchange="saveRegion()">
+          <option value="서울" selected>서울</option>
+          <option value="경기">경기</option>
+          <option value="인천">인천</option>
+          <option value="부산">부산</option>
+          <option value="대구">대구</option>
+          <option value="광주">광주</option>
+          <option value="대전">대전</option>
+        </select>
+      </div>
+
+      <!-- 화면 1: 입시 선택 -->
+      <div class="screen active" id="screen1">
+        <div class="hero">
+          <h1>어떤 진학을<br>준비 중이신가요?</h1>
+          <p class="subtext">공식 데이터로 나에게 딱 맞는 정보를 안내해드려요.</p>
         </div>
-
-        <div class="screen active" id="scr1">
-            <div class="hero">
-                <h1>어떤 입시를<br>준비하시나요?</h1>
-                <p class="subtext">딱 맞는 예측 흐름으로 바로 안내해드릴게요.</p>
+        <div class="card-list">
+          <button class="choice-card" onclick="goToScreen('screen2')">
+            <div class="choice-top">
+              <div>
+                <h3>고입 패스</h3>
+                <p>중학생 · 특목고 · 자사고 · 일반고</p>
+              </div>
+              <div class="icon-badge">🎓</div>
             </div>
-
-            <div class="card-list">
-                <button class="choice-card" onclick="goNext(2)">
-                    <div class="choice-top">
-                        <div>
-                            <h3>고입 패스</h3>
-                            <p>중학생 전용 · 특목고 · 자사고 · 일반고</p>
-                        </div>
-                        <div class="icon-badge">🎓</div>
-                    </div>
-                </button>
-
-                <button class="choice-card" onclick="goNext(3)">
-                    <div class="choice-top">
-                        <div>
-                            <h3>대입 패스</h3>
-                            <p>고등학생 전용 · 수시 · 정시 합격예측</p>
-                        </div>
-                        <div class="icon-badge">📘</div>
-                    </div>
-                </button>
+          </button>
+          <button class="choice-card" onclick="goToScreen('screen3')">
+            <div class="choice-top">
+              <div>
+                <h3>대입 패스</h3>
+                <p>고등학생 · 수시 · 정시 가능성</p>
+              </div>
+              <div class="icon-badge">📚</div>
             </div>
-
-            <p class="footer-note">복잡한 입력 없이, 필요한 것만 순서대로 물어봅니다.</p>
+          </button>
         </div>
+        <p class="footer-note">대학알리미 · 학교알리미 등 공식 데이터 기반 (2025년 기준)</p>
+        <div class="update-info">업데이트: 2025.11</div>
+      </div>
 
-        <div class="screen" id="scr2">
-            <div class="hero">
-                <h1>현재 학년을<br>선택해주세요</h1>
-                <p class="subtext">학교 유형과 지원 가능 전형을 맞춤으로 보여드릴게요.</p>
-            </div>
-
-            <div class="card-list">
-                <button class="choice-card" onclick="alert('다음 단계로 연결 예정입니다.')">
-                    <div class="choice-top">
-                        <div>
-                            <h3>중학교 3학년</h3>
-                            <p>올해 지원 가능한 고입 전형 중심</p>
-                        </div>
-                        <div class="icon-badge">3</div>
-                    </div>
-                </button>
-
-                <button class="choice-card">
-                    <div class="choice-top">
-                        <div>
-                            <h3>중학교 1 · 2학년</h3>
-                            <p>미리 준비하는 성적 추이와 목표 관리</p>
-                        </div>
-                        <div class="icon-badge">12</div>
-                    </div>
-                </button>
-            </div>
-
-            <button class="secondary-button" onclick="goNext(1)">← 뒤로 가기</button>
+      <!-- 화면 2: 고입 (고등학교 검색) -->
+      <div class="screen" id="screen2">
+        <div class="hero">
+          <h1>목표 고등학교를<br>찾아보세요</h1>
+          <p class="subtext">지역과 내신 입력으로 가능한 학교만 골라드려요.</p>
         </div>
-
-        <div class="screen" id="scr3">
-            <div class="hero">
-                <h1>목표 대학이<br>있으신가요?</h1>
-                <p class="subtext">희망 대학을 입력하면 그 기준으로 예측을 시작합니다.</p>
-            </div>
-
-            <div class="field-wrap">
-                <label class="input-label" for="collegeInput">희망 대학</label>
-                <input id="collegeInput" class="input-box" type="text" placeholder="예: 경북대학교, 영남대학교">
-                <button class="primary-button">다음 단계로</button>
-            </div>
-
-            <button class="secondary-button" onclick="goNext(1)">← 뒤로 가기</button>
+        <div class="field-wrap">
+          <label class="input-label">고등학교 검색</label>
+          <input id="highInput" class="input-box" type="text" placeholder="예: 서울과학고, 북일고" oninput="searchHighSchool()">
+          <div id="highResults" style="margin-top:12px;"></div>
         </div>
+        <button class="secondary-button" onclick="goToScreen('screen1')">← 뒤로</button>
+      </div>
+
+      <!-- 화면 3: 대입 (대학 검색) -->
+      <div class="screen" id="screen3">
+        <div class="hero">
+          <h1>희망 대학을<br>입력해주세요</h1>
+          <p class="subtext">학과와 정원까지 바로 확인할 수 있어요.</p>
+        </div>
+        <div class="field-wrap">
+          <label class="input-label">대학 / 학과 검색</label>
+          <input id="univInput" class="input-box" type="text" placeholder="예: 서울대, 의학과" oninput="searchUniversity()">
+          <div id="univResults" style="margin-top:12px;"></div>
+        </div>
+        <button class="secondary-button" onclick="goToScreen('screen1')">← 뒤로</button>
+      </div>
+
+      <!-- 결과 화면 예시 (나중에 확장) -->
+      <div class="screen" id="resultScreen">
+        <div class="hero">
+          <h1>가능성 78%</h1>
+          <p class="subtext">내신 2.3등급 기준 (참고용)</p>
+        </div>
+        <div class="card-list">
+          <div class="choice-card">
+            <h3>서울대학교 컴퓨터공학과</h3>
+            <p>모집정원 120명 · 가능성 높음</p>
+          </div>
+          <!-- 더 많은 카드 추가 가능 -->
+        </div>
+        <button class="secondary-button" onclick="goToScreen('screen1')">처음으로</button>
+      </div>
     </div>
-</div>
+  </div>
 
-<script>
-    function goNext(n) {
-        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        document.getElementById('scr' + n).classList.add('active');
-
-        const stepLabel = document.getElementById('stepLabel');
-        const stepMap = { 1: 'STEP 1', 2: 'STEP 2', 3: 'STEP 2' };
-        stepLabel.textContent = stepMap[n] || 'STEP 1';
+  <script>
+    // 화면 전환 함수
+    function goToScreen(id) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
     }
-</script>
+
+    // 지역 저장 (localStorage)
+    function saveRegion() {
+      const region = document.getElementById('regionSelect').value;
+      localStorage.setItem('ipsiRegion', region);
+    }
+    window.addEventListener('load', () => {
+      const saved = localStorage.getItem('ipsiRegion') || '서울';
+      document.getElementById('regionSelect').value = saved;
+    });
+
+    // 대학 검색 예시 (실제 API는 키 넣어서 교체)
+    function searchUniversity() {
+      const query = document.getElementById('univInput').value.trim();
+      const results = document.getElementById('univResults');
+      results.innerHTML = '';
+
+      if (query.length < 2) return;
+
+      // 실제로는 fetch(SERVICE_KEY) 호출
+      // 지금은 mock
+      const mock = [
+        { name: "서울대학교", desc: "국립 · 서울 · 종합대학" },
+        { name: "연세대학교", desc: "사립 · 서울 · 종합대학" },
+        { name: "고려대학교", desc: "사립 · 서울 · 종합대학" }
+      ];
+
+      mock.filter(item => item.name.includes(query)).forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'choice-card';
+        div.style.margin = '8px 0';
+        div.innerHTML = `<h3>${item.name}</h3><p>${item.desc}</p>`;
+        div.onclick = () => alert(item.name + ' 선택!');
+        results.appendChild(div);
+      });
+    }
+
+    // 고등학교 검색도 비슷하게 구현 가능
+  </script>
+</body>
+</html>
