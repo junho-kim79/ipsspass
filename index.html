@@ -5,17 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>ipsiPASS - 진학 정보 안내</title>
   <style>
-    /* 기존 스타일 그대로 유지 + 약간 정리 */
     :root {
       --blue: #0A84FF;
       --text: #111111;
       --sub: #6E6E73;
       --bg: #FAFAFC;
-      --card: rgba(255,255,255,0.82);
-      --line: rgba(255,255,255,0.65);
+      --card: rgba(255,255,255,0.88);
+      --line: rgba(255,255,255,0.7);
       --shadow: 0 18px 50px rgba(16, 24, 40, 0.08);
+      --green: #16a34a;
+      --green-bg: rgba(22,163,74,0.12);
+      --gray-bg: rgba(110,110,115,0.12);
+      --danger: #ef4444;
     }
+
     * { box-sizing: border-box; }
+
     body {
       margin: 0;
       min-height: 100vh;
@@ -24,13 +29,16 @@
       justify-content: center;
       padding: 16px;
       font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Segoe UI', sans-serif;
-      background: radial-gradient(circle at top left, rgba(10,132,255,0.08), transparent 40%), linear-gradient(180deg, #F7F8FC 0%, #EEF2F8 100%);
+      background:
+        radial-gradient(circle at top left, rgba(10,132,255,0.08), transparent 40%),
+        linear-gradient(180deg, #F7F8FC 0%, #EEF2F8 100%);
       color: var(--text);
     }
+
     .phone-shell {
       width: 100%;
-      max-width: 420px;
-      background: rgba(255,255,255,0.6);
+      max-width: 430px;
+      background: rgba(255,255,255,0.62);
       backdrop-filter: blur(24px);
       border: 1px solid rgba(255,255,255,0.75);
       border-radius: 38px;
@@ -38,38 +46,33 @@
       padding: 16px;
       overflow: hidden;
     }
+
     .view-container {
-      background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.8));
+      background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,255,255,0.82));
       border: 1px solid var(--line);
       border-radius: 30px;
-      min-height: 740px;
-      padding: 24px 18px;
+      min-height: 760px;
+      padding: 24px 18px 20px;
       position: relative;
     }
+
     .topbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
+
     .brand {
-      font-size: 0.92rem;
+      font-size: 0.95rem;
       font-weight: 800;
       letter-spacing: -0.02em;
     }
+
     .brand span {
       color: var(--blue);
     }
-    .region-chip {
-      padding: 6px 14px;
-      border-radius: 999px;
-      background: rgba(10,132,255,0.1);
-      color: var(--blue);
-      font-size: 0.8rem;
-      font-weight: 700;
-      border: none;
-      cursor: pointer;
-    }
+
     .step-chip {
       padding: 6px 12px;
       border-radius: 999px;
@@ -78,15 +81,21 @@
       font-size: 0.78rem;
       font-weight: 700;
     }
+
     .screen {
       display: none;
-      animation: fadeUp 0.4s ease;
+      animation: fadeUp 0.35s ease;
     }
-    .screen.active { display: block; }
+
+    .screen.active {
+      display: block;
+    }
+
     .hero {
-      margin: 20px 0 28px;
+      margin: 20px 0 24px;
       text-align: center;
     }
+
     h1 {
       margin: 0 0 8px;
       font-size: 1.95rem;
@@ -94,49 +103,57 @@
       letter-spacing: -0.04em;
       font-weight: 800;
     }
+
     .subtext {
       margin: 0;
       color: var(--sub);
       font-size: 0.96rem;
       line-height: 1.5;
     }
+
     .card-list {
       display: grid;
-      gap: 16px;
-      margin: 24px 0;
+      gap: 14px;
+      margin: 22px 0;
     }
+
     .choice-card {
       text-align: left;
-      padding: 20px 18px;
+      padding: 18px 16px;
       background: var(--card);
       border: 1px solid rgba(255,255,255,0.9);
-      border-radius: 24px;
+      border-radius: 22px;
       box-shadow: 0 8px 24px rgba(15,23,42,0.04);
       cursor: pointer;
       transition: all 0.2s ease;
     }
+
     .choice-card:hover {
       transform: translateY(-2px);
       box-shadow: 0 14px 32px rgba(10,132,255,0.12);
     }
+
     .choice-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 16px;
+      gap: 14px;
     }
-    .choice-card h3 {
+
+    .choice-card h3, .result-card h3 {
       margin: 0;
-      font-size: 1.15rem;
+      font-size: 1.05rem;
       letter-spacing: -0.02em;
       font-weight: 700;
     }
-    .choice-card p {
+
+    .choice-card p, .result-card p {
       margin: 6px 0 0;
       font-size: 0.9rem;
       color: var(--sub);
       line-height: 1.45;
     }
+
     .icon-badge {
       width: 44px;
       height: 44px;
@@ -149,6 +166,11 @@
       font-size: 1.3rem;
       flex-shrink: 0;
     }
+
+    .field-wrap {
+      margin-bottom: 14px;
+    }
+
     .input-label {
       display: block;
       margin-bottom: 8px;
@@ -156,24 +178,38 @@
       font-weight: 700;
       letter-spacing: -0.01em;
     }
-    .input-box {
+
+    .input-box, .select-box {
       width: 100%;
       padding: 16px 18px;
       border-radius: 20px;
       border: 1px solid rgba(17,17,17,0.08);
-      background: rgba(255,255,255,0.94);
+      background: rgba(255,255,255,0.96);
       font-size: 1rem;
       outline: none;
       transition: all 0.2s;
     }
-    .input-box:focus {
+
+    .input-box:focus, .select-box:focus {
       border-color: rgba(10,132,255,0.5);
       box-shadow: 0 0 0 4px rgba(10,132,255,0.12);
     }
+
+    .region-chip {
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(10,132,255,0.1);
+      color: var(--blue);
+      font-size: 0.82rem;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+    }
+
     .primary-button {
       width: 100%;
-      padding: 18px;
-      margin-top: 16px;
+      padding: 17px;
+      margin-top: 14px;
       background: linear-gradient(135deg, #0A84FF, #3AA0FF);
       color: white;
       font-size: 1rem;
@@ -183,6 +219,7 @@
       box-shadow: 0 12px 24px rgba(10,132,255,0.25);
       cursor: pointer;
     }
+
     .secondary-button {
       width: 100%;
       padding: 14px;
@@ -195,13 +232,15 @@
       border-radius: 20px;
       cursor: pointer;
     }
+
     .footer-note {
-      margin-top: 24px;
+      margin-top: 22px;
       text-align: center;
       color: #8E8E93;
       font-size: 0.8rem;
       line-height: 1.5;
     }
+
     .update-info {
       position: absolute;
       top: 12px;
@@ -212,6 +251,121 @@
       padding: 4px 10px;
       border-radius: 12px;
     }
+
+    .status-row {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .status-badge.gray {
+      color: var(--sub);
+      background: var(--gray-bg);
+    }
+
+    .status-badge.green {
+      color: var(--green);
+      background: var(--green-bg);
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .results-wrap {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+      max-height: 310px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .mini-meta {
+      margin-top: 8px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .mini-chip {
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(10,132,255,0.08);
+      color: var(--blue);
+      font-size: 0.76rem;
+      font-weight: 700;
+    }
+
+    .summary-card, .result-card {
+      padding: 16px;
+      border-radius: 22px;
+      background: rgba(255,255,255,0.92);
+      border: 1px solid rgba(255,255,255,0.95);
+      box-shadow: 0 8px 24px rgba(15,23,42,0.04);
+    }
+
+    .score-circle {
+      width: 112px;
+      height: 112px;
+      margin: 0 auto 14px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(10,132,255,0.12), rgba(58,160,255,0.25));
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: var(--blue);
+    }
+
+    .predict-badge {
+      display: inline-block;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      margin-top: 10px;
+    }
+
+    .predict-safe { background: rgba(34,197,94,0.12); color: #15803d; }
+    .predict-fit { background: rgba(59,130,246,0.12); color: #1d4ed8; }
+    .predict-up { background: rgba(245,158,11,0.14); color: #b45309; }
+    .predict-challenge { background: rgba(239,68,68,0.12); color: #b91c1c; }
+
+    .helper-text {
+      font-size: 0.8rem;
+      color: var(--sub);
+      line-height: 1.45;
+      margin-top: 8px;
+    }
+
+    .empty-text {
+      padding: 14px;
+      text-align: center;
+      color: var(--sub);
+      font-size: 0.9rem;
+    }
+
+    .danger-text {
+      color: var(--danger);
+      font-size: 0.82rem;
+      margin-top: 8px;
+    }
+
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(16px); }
       to { opacity: 1; transform: translateY(0); }
@@ -223,30 +377,40 @@
     <div class="view-container">
       <div class="topbar">
         <div class="brand">ipsi<span>PASS</span></div>
-        <div class="step-chip">STEP 1</div>
+        <div class="step-chip" id="stepChip">STEP 1</div>
       </div>
 
-      <!-- 항상 보이는 지역 선택 -->
-      <div style="text-align:center; margin-bottom:20px;">
+      <div style="text-align:center; margin-bottom:18px;">
         <select id="regionSelect" class="region-chip" onchange="saveRegion()">
-          <option value="서울" selected>서울</option>
+          <option value="서울">서울</option>
           <option value="경기">경기</option>
           <option value="인천">인천</option>
           <option value="부산">부산</option>
           <option value="대구">대구</option>
           <option value="광주">광주</option>
           <option value="대전">대전</option>
+          <option value="울산">울산</option>
+          <option value="세종">세종</option>
+          <option value="강원">강원</option>
+          <option value="충북">충북</option>
+          <option value="충남">충남</option>
+          <option value="전북">전북</option>
+          <option value="전남">전남</option>
+          <option value="경북">경북</option>
+          <option value="경남">경남</option>
+          <option value="제주">제주</option>
         </select>
       </div>
 
-      <!-- 화면 1: 입시 선택 -->
+      <!-- 화면 1 -->
       <div class="screen active" id="screen1">
         <div class="hero">
           <h1>어떤 진학을<br>준비 중이신가요?</h1>
-          <p class="subtext">공식 데이터로 나에게 딱 맞는 정보를 안내해드려요.</p>
+          <p class="subtext">공식 데이터와 캐시 데이터를 바탕으로<br>빠르고 직관적인 진학 예측을 제공합니다.</p>
         </div>
+
         <div class="card-list">
-          <button class="choice-card" onclick="goToScreen('screen2')">
+          <button class="choice-card" onclick="goToScreen('screen2', 2)">
             <div class="choice-top">
               <div>
                 <h3>고입 패스</h3>
@@ -255,110 +419,629 @@
               <div class="icon-badge">🎓</div>
             </div>
           </button>
-          <button class="choice-card" onclick="goToScreen('screen3')">
+
+          <button class="choice-card" onclick="goToScreen('screen3', 2)">
             <div class="choice-top">
               <div>
                 <h3>대입 패스</h3>
-                <p>고등학생 · 수시 · 정시 가능성</p>
+                <p>고등학생 · 대학 · 학과 · 내신 예측</p>
               </div>
               <div class="icon-badge">📚</div>
             </div>
           </button>
         </div>
-        <p class="footer-note">대학알리미 · 학교알리미 등 공식 데이터 기반 (2025년 기준)</p>
-        <div class="update-info">업데이트: 2025.11</div>
+
+        <p class="footer-note">대학알리미 · 학교알리미 기반 / 예측 결과는 참고용입니다.</p>
+        <div class="update-info">업데이트: 캐시 우선</div>
       </div>
 
-      <!-- 화면 2: 고입 (고등학교 검색) -->
+      <!-- 화면 2: 고입 -->
       <div class="screen" id="screen2">
         <div class="hero">
           <h1>목표 고등학교를<br>찾아보세요</h1>
-          <p class="subtext">지역과 내신 입력으로 가능한 학교만 골라드려요.</p>
+          <p class="subtext">학교알리미 API 연결 시 자동완성이 작동합니다.</p>
         </div>
+
+        <div class="status-row">
+          <div id="highStatus" class="status-badge gray">
+            <span class="dot"></span>
+            <span>학교 데이터 대기 중</span>
+          </div>
+        </div>
+
         <div class="field-wrap">
-          <label class="input-label">고등학교 검색</label>
-          <input id="highInput" class="input-box" type="text" placeholder="예: 서울과학고, 북일고" oninput="searchHighSchool()">
-          <div id="highResults" style="margin-top:12px;"></div>
+          <label class="input-label" for="highInput">고등학교 검색</label>
+          <input
+            id="highInput"
+            class="input-box"
+            type="text"
+            placeholder="예: 서울과학고, 북일고"
+            oninput="searchHighSchool()"
+          />
+          <div id="highResults" class="results-wrap"></div>
+          <p class="helper-text">공개 저장소에는 API 키를 넣지 말고, 로컬 테스트에서만 넣으세요.</p>
         </div>
-        <button class="secondary-button" onclick="goToScreen('screen1')">← 뒤로</button>
+
+        <button class="secondary-button" onclick="goToScreen('screen1', 1)">← 뒤로</button>
       </div>
 
-      <!-- 화면 3: 대입 (대학 검색) -->
+      <!-- 화면 3: 대학 검색 -->
       <div class="screen" id="screen3">
         <div class="hero">
           <h1>희망 대학을<br>입력해주세요</h1>
-          <p class="subtext">학과와 정원까지 바로 확인할 수 있어요.</p>
+          <p class="subtext">캐시 데이터로 먼저 보여주고, API 성공 시 실시간으로 보강합니다.</p>
         </div>
+
+        <div class="status-row">
+          <div id="univStatus" class="status-badge gray">
+            <span class="dot"></span>
+            <span>캐시 데이터 사용 중</span>
+          </div>
+        </div>
+
         <div class="field-wrap">
-          <label class="input-label">대학 / 학과 검색</label>
-          <input id="univInput" class="input-box" type="text" placeholder="예: 서울대, 의학과" oninput="searchUniversity()">
-          <div id="univResults" style="margin-top:12px;"></div>
+          <label class="input-label" for="schoolInput">현재 학교</label>
+          <input
+            id="schoolInput"
+            class="input-box"
+            type="text"
+            placeholder="예: 경북고등학교"
+            oninput="searchCurrentSchool()"
+          />
+          <div id="schoolResults" class="results-wrap"></div>
         </div>
-        <button class="secondary-button" onclick="goToScreen('screen1')">← 뒤로</button>
+
+        <div class="field-wrap">
+          <label class="input-label" for="univInput">대학 검색</label>
+          <input
+            id="univInput"
+            class="input-box"
+            type="text"
+            placeholder="예: 서울대, 경북대, ㅅㅇㄷ"
+            oninput="searchUniversity()"
+          />
+          <div id="univResults" class="results-wrap"></div>
+        </div>
+
+        <button class="secondary-button" onclick="goToScreen('screen1', 1)">← 뒤로</button>
       </div>
 
-      <!-- 결과 화면 예시 (나중에 확장) -->
+      <!-- 화면 4: 학과 선택 -->
+      <div class="screen" id="screen4">
+        <div class="hero">
+          <h1>희망 학과를<br>선택해주세요</h1>
+          <p class="subtext" id="selectedUnivText">선택한 대학의 학과 목록을 보여드립니다.</p>
+        </div>
+
+        <div class="summary-card">
+          <h3 id="selectedUnivTitle">선택한 대학</h3>
+          <div class="mini-meta">
+            <span class="mini-chip" id="selectedUnivRegion">지역</span>
+            <span class="mini-chip" id="selectedUnivType">구분</span>
+          </div>
+        </div>
+
+        <div class="field-wrap" style="margin-top:14px;">
+          <label class="input-label" for="majorInput">학과 검색</label>
+          <input
+            id="majorInput"
+            class="input-box"
+            type="text"
+            placeholder="예: 컴퓨터, 간호, ㄱㅎ"
+            oninput="searchMajor()"
+          />
+          <div id="majorResults" class="results-wrap"></div>
+        </div>
+
+        <button class="secondary-button" onclick="goToScreen('screen3', 2)">← 대학 다시 선택</button>
+      </div>
+
+      <!-- 화면 5: 내신 입력 -->
+      <div class="screen" id="screen5">
+        <div class="hero">
+          <h1>내신 정보를<br>입력해주세요</h1>
+          <p class="subtext">공개 데이터와 정원 정보를 활용한 참고용 예측입니다.</p>
+        </div>
+
+        <div class="summary-card">
+          <h3 id="selectedMajorTitle">선택한 학과</h3>
+          <p id="selectedMajorMeta">학교 / 지역 / 모집정원</p>
+        </div>
+
+        <div class="field-wrap" style="margin-top:14px;">
+          <label class="input-label" for="gradeInput">내신 등급</label>
+          <input
+            id="gradeInput"
+            class="input-box"
+            type="number"
+            min="1"
+            max="9"
+            step="0.1"
+            placeholder="예: 2.3"
+          />
+        </div>
+
+        <div class="field-wrap">
+          <label class="input-label" for="trackSelect">전형 감각</label>
+          <select id="trackSelect" class="select-box">
+            <option value="교과">학생부교과 중심</option>
+            <option value="종합">학생부종합 중심</option>
+            <option value="정시">정시 참고형</option>
+          </select>
+        </div>
+
+        <button class="primary-button" onclick="runPrediction()">예측 결과 보기</button>
+        <button class="secondary-button" onclick="goToScreen('screen4', 3)">← 학과 다시 선택</button>
+      </div>
+
+      <!-- 화면 6: 결과 -->
       <div class="screen" id="resultScreen">
         <div class="hero">
-          <h1>가능성 78%</h1>
-          <p class="subtext">내신 2.3등급 기준 (참고용)</p>
+          <h1>예측 결과</h1>
+          <p class="subtext">절대적인 합격컷이 아니라 참고용 예측입니다.</p>
         </div>
-        <div class="card-list">
-          <div class="choice-card">
-            <h3>서울대학교 컴퓨터공학과</h3>
-            <p>모집정원 120명 · 가능성 높음</p>
-          </div>
-          <!-- 더 많은 카드 추가 가능 -->
+
+        <div class="result-card" style="text-align:center;">
+          <div class="score-circle" id="resultScore">78%</div>
+          <h3 id="resultMainTitle">적정 지원</h3>
+          <div id="resultBadge" class="predict-badge predict-fit">적정</div>
+          <p id="resultSubText" style="margin-top:10px;">내신 2.3등급 기준 참고용 예측</p>
         </div>
-        <button class="secondary-button" onclick="goToScreen('screen1')">처음으로</button>
+
+        <div class="result-card" style="margin-top:12px;">
+          <h3 id="resultSelectionTitle">서울대학교 컴퓨터공학과</h3>
+          <p id="resultSelectionMeta">서울 · 모집정원 120명 · 학생부교과 기준 참고</p>
+        </div>
+
+        <div class="result-card" style="margin-top:12px;">
+          <h3>왜 이렇게 나왔나요?</h3>
+          <p id="resultReason">
+            선택한 대학/학과의 지역, 모집정원, 입력한 내신 등급, 전형 성격을 바탕으로 예측했습니다.
+          </p>
+        </div>
+
+        <button class="primary-button" onclick="goToScreen('screen1', 1)">처음으로</button>
+        <button class="secondary-button" onclick="goToScreen('screen5', 4)">← 다시 계산</button>
       </div>
     </div>
   </div>
 
   <script>
-    // 화면 전환 함수
-    function goToScreen(id) {
+    /*
+      중요:
+      - 이 레포가 Public이면 아래 KEY는 GitHub에 올리지 마세요.
+      - 로컬 테스트에서만 넣고, 공개 업로드 버전에서는 빈 문자열로 두세요.
+    */
+    const CONFIG = {
+      DATA_BASE: "./",
+      SCHOOL_API_KEY: "", // 예: open.neis.go.kr KEY
+      SCHOOL_API_ENDPOINT: "https://open.neis.go.kr/hub/schoolInfo",
+      UNIVERSITY_API_KEY: "", // 나중에 대학알리미/공공데이터 API 연결 시 사용
+      UNIVERSITY_API_ENDPOINT: "" // 정확한 엔드포인트 연결 시 여기에 입력
+    };
+
+    const STATE = {
+      universities: [],
+      majors: [],
+      majorIndex: [],
+      selectedRegion: "서울",
+      selectedSchool: "",
+      selectedUniversity: null,
+      selectedMajor: null
+    };
+
+    const REGION_MAP = {
+      "서울": "서울",
+      "경기": "경기",
+      "인천": "인천",
+      "부산": "부산",
+      "대구": "대구",
+      "광주": "광주",
+      "대전": "대전",
+      "울산": "울산",
+      "세종": "세종",
+      "강원": "강원",
+      "충북": "충북",
+      "충남": "충남",
+      "전북": "전북",
+      "전남": "전남",
+      "경북": "경북",
+      "경남": "경남",
+      "제주": "제주"
+    };
+
+    function goToScreen(id, step = 1) {
       document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
       document.getElementById(id).classList.add('active');
+      document.getElementById('stepChip').textContent = `STEP ${step}`;
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
-    // 지역 저장 (localStorage)
     function saveRegion() {
       const region = document.getElementById('regionSelect').value;
+      STATE.selectedRegion = region;
       localStorage.setItem('ipsiRegion', region);
     }
-    window.addEventListener('load', () => {
-      const saved = localStorage.getItem('ipsiRegion') || '서울';
-      document.getElementById('regionSelect').value = saved;
-    });
 
-    // 대학 검색 예시 (실제 API는 키 넣어서 교체)
-    function searchUniversity() {
-      const query = document.getElementById('univInput').value.trim();
-      const results = document.getElementById('univResults');
-      results.innerHTML = '';
+    function setStatus(elId, type, text) {
+      const el = document.getElementById(elId);
+      el.className = `status-badge ${type}`;
+      el.innerHTML = `<span class="dot"></span><span>${text}</span>`;
+    }
 
-      if (query.length < 2) return;
-
-      // 실제로는 fetch(SERVICE_KEY) 호출
-      // 지금은 mock
-      const mock = [
-        { name: "서울대학교", desc: "국립 · 서울 · 종합대학" },
-        { name: "연세대학교", desc: "사립 · 서울 · 종합대학" },
-        { name: "고려대학교", desc: "사립 · 서울 · 종합대학" }
+    function getChoseong(text = "") {
+      const CHO = [
+        "ㄱ","ㄲ","ㄴ","ㄷ","ㄸ","ㄹ","ㅁ","ㅂ","ㅃ","ㅅ",
+        "ㅆ","ㅇ","ㅈ","ㅉ","ㅊ","ㅋ","ㅌ","ㅍ","ㅎ"
       ];
 
-      mock.filter(item => item.name.includes(query)).forEach(item => {
-        const div = document.createElement('div');
-        div.className = 'choice-card';
-        div.style.margin = '8px 0';
-        div.innerHTML = `<h3>${item.name}</h3><p>${item.desc}</p>`;
-        div.onclick = () => alert(item.name + ' 선택!');
-        results.appendChild(div);
+      return [...String(text)].map(char => {
+        const code = char.charCodeAt(0) - 44032;
+        if (code >= 0 && code <= 11171) {
+          return CHO[Math.floor(code / 588)];
+        }
+        return char;
+      }).join("");
+    }
+
+    function includesSmart(source = "", query = "") {
+      const s = String(source).toLowerCase();
+      const q = String(query).toLowerCase();
+      if (!q) return true;
+      return s.includes(q) || getChoseong(source).includes(q);
+    }
+
+    async function loadJSON(path, fallback = []) {
+      try {
+        const res = await fetch(path);
+        if (!res.ok) throw new Error(`${path} 로드 실패`);
+        return await res.json();
+      } catch (err) {
+        console.error(err);
+        return fallback;
+      }
+    }
+
+    async function loadAppData() {
+      const [universities, majors, majorIndex] = await Promise.all([
+        loadJSON(`${CONFIG.DATA_BASE}universities_app.json`),
+        loadJSON(`${CONFIG.DATA_BASE}majors_active_undergrad_app.json`),
+        loadJSON(`${CONFIG.DATA_BASE}majors_search_index.json`)
+      ]);
+
+      STATE.universities = universities || [];
+      STATE.majors = majors || [];
+      STATE.majorIndex = majorIndex || [];
+
+      console.log("대학 수:", STATE.universities.length);
+      console.log("학과 수:", STATE.majors.length);
+    }
+
+    function renderCardList(targetId, items, renderer) {
+      const target = document.getElementById(targetId);
+      target.innerHTML = "";
+
+      if (!items || items.length === 0) {
+        target.innerHTML = `<div class="empty-text">검색 결과가 없습니다.</div>`;
+        return;
+      }
+
+      items.forEach(item => {
+        const node = renderer(item);
+        target.appendChild(node);
       });
     }
 
-    // 고등학교 검색도 비슷하게 구현 가능
+    // ---------- 학교 검색 ----------
+    async function searchHighSchool() {
+      const query = document.getElementById("highInput").value.trim();
+      const resultsEl = document.getElementById("highResults");
+
+      if (query.length < 2) {
+        resultsEl.innerHTML = "";
+        return;
+      }
+
+      if (!CONFIG.SCHOOL_API_KEY) {
+        setStatus("highStatus", "gray", "학교 API 키 연결 전");
+        resultsEl.innerHTML = `<div class="empty-text">학교 API 키를 연결하면 자동완성이 작동합니다.</div>`;
+        return;
+      }
+
+      try {
+        const url = `${CONFIG.SCHOOL_API_ENDPOINT}?KEY=${encodeURIComponent(CONFIG.SCHOOL_API_KEY)}&Type=json&pIndex=1&pSize=20&SCHUL_NM=${encodeURIComponent(query)}`;
+        const res = await fetch(url);
+        const data = await res.json();
+
+        const rows = data?.schoolInfo?.[1]?.row || [];
+        const highSchools = rows.filter(row =>
+          String(row.SCHUL_KND_SC_NM || "").includes("고등학교")
+        );
+
+        setStatus("highStatus", "green", "실시간 최신");
+
+        renderCardList("highResults", highSchools, item => {
+          const div = document.createElement("div");
+          div.className = "choice-card";
+          div.innerHTML = `
+            <div class="choice-top">
+              <div>
+                <h3>${item.SCHUL_NM}</h3>
+                <p>${item.ATPT_OFCDC_SC_NM || ""} · ${item.ORG_RDNMA || ""}</p>
+              </div>
+              <div class="icon-badge">🏫</div>
+            </div>
+          `;
+          div.onclick = () => {
+            document.getElementById("highInput").value = item.SCHUL_NM;
+            document.getElementById("highResults").innerHTML = "";
+          };
+          return div;
+        });
+      } catch (err) {
+        console.error(err);
+        setStatus("highStatus", "gray", "학교 캐시/수동 입력");
+        resultsEl.innerHTML = `<div class="empty-text">학교 API 호출에 실패했습니다. 학교명을 직접 입력해주세요.</div>`;
+      }
+    }
+
+    async function searchCurrentSchool() {
+      const query = document.getElementById("schoolInput").value.trim();
+      const resultsEl = document.getElementById("schoolResults");
+
+      if (query.length < 2) {
+        resultsEl.innerHTML = "";
+        return;
+      }
+
+      if (!CONFIG.SCHOOL_API_KEY) {
+        resultsEl.innerHTML = `<div class="empty-text">학교 API 키 연결 시 자동완성이 작동합니다.</div>`;
+        return;
+      }
+
+      try {
+        const url = `${CONFIG.SCHOOL_API_ENDPOINT}?KEY=${encodeURIComponent(CONFIG.SCHOOL_API_KEY)}&Type=json&pIndex=1&pSize=20&SCHUL_NM=${encodeURIComponent(query)}`;
+        const res = await fetch(url);
+        const data = await res.json();
+
+        const rows = data?.schoolInfo?.[1]?.row || [];
+        const schools = rows.filter(row =>
+          String(row.SCHUL_KND_SC_NM || "").includes("고등학교")
+        );
+
+        renderCardList("schoolResults", schools, item => {
+          const div = document.createElement("div");
+          div.className = "choice-card";
+          div.innerHTML = `
+            <div class="choice-top">
+              <div>
+                <h3>${item.SCHUL_NM}</h3>
+                <p>${item.ATPT_OFCDC_SC_NM || ""} · ${item.ORG_RDNMA || ""}</p>
+              </div>
+              <div class="icon-badge">🏫</div>
+            </div>
+          `;
+          div.onclick = () => {
+            STATE.selectedSchool = item.SCHUL_NM;
+            document.getElementById("schoolInput").value = item.SCHUL_NM;
+            resultsEl.innerHTML = "";
+          };
+          return div;
+        });
+      } catch (err) {
+        console.error(err);
+        resultsEl.innerHTML = `<div class="empty-text">학교 검색에 실패했습니다.</div>`;
+      }
+    }
+
+    // ---------- 대학 검색 ----------
+    async function searchUniversity() {
+      const query = document.getElementById("univInput").value.trim();
+      const resultsEl = document.getElementById("univResults");
+      resultsEl.innerHTML = "";
+
+      if (query.length < 1) return;
+
+      let list = [...STATE.universities];
+
+      // 지역 필터
+      if (STATE.selectedRegion) {
+        list = list.filter(item =>
+          String(item.시도명 || "").includes(REGION_MAP[STATE.selectedRegion] || STATE.selectedRegion)
+          || STATE.selectedRegion === "서울"
+          || STATE.selectedRegion === "경기"
+          || STATE.selectedRegion === "인천"
+          || STATE.selectedRegion === "부산"
+          || STATE.selectedRegion === "대구"
+          || STATE.selectedRegion === "광주"
+          || STATE.selectedRegion === "대전"
+          || STATE.selectedRegion === "울산"
+          || STATE.selectedRegion === "세종"
+          || STATE.selectedRegion === "강원"
+          || STATE.selectedRegion === "충북"
+          || STATE.selectedRegion === "충남"
+          || STATE.selectedRegion === "전북"
+          || STATE.selectedRegion === "전남"
+          || STATE.selectedRegion === "경북"
+          || STATE.selectedRegion === "경남"
+          || STATE.selectedRegion === "제주"
+        );
+      }
+
+      const filtered = list.filter(item =>
+        includesSmart(item.학교명, query)
+      ).slice(0, 30);
+
+      setStatus("univStatus", "gray", "캐시 데이터 사용 중");
+
+      // 대학 API가 연결되면 여기에 성공 시 초록불 구조 유지
+      if (CONFIG.UNIVERSITY_API_KEY && CONFIG.UNIVERSITY_API_ENDPOINT) {
+        setStatus("univStatus", "green", "실시간 최신");
+      }
+
+      renderCardList("univResults", filtered, item => {
+        const div = document.createElement("div");
+        div.className = "choice-card";
+        div.innerHTML = `
+          <div class="choice-top">
+            <div>
+              <h3>${item.학교명}</h3>
+              <p>${item.시도명 || "지역 미상"} · ${item.학교구분명 || "학교구분 미상"} · 학과 ${item.학과수 || 0}개</p>
+            </div>
+            <div class="icon-badge">🏛️</div>
+          </div>
+        `;
+        div.onclick = () => selectUniversity(item);
+        return div;
+      });
+    }
+
+    function selectUniversity(univ) {
+      STATE.selectedUniversity = univ;
+
+      document.getElementById("selectedUnivTitle").textContent = univ.학교명;
+      document.getElementById("selectedUnivText").textContent = `${univ.학교명}의 학과 목록을 보여드립니다.`;
+      document.getElementById("selectedUnivRegion").textContent = univ.시도명 || "지역 미상";
+      document.getElementById("selectedUnivType").textContent = univ.학교구분명 || "학교구분 미상";
+      document.getElementById("majorInput").value = "";
+
+      goToScreen("screen4", 3);
+      searchMajor();
+    }
+
+    // ---------- 학과 검색 ----------
+    function searchMajor() {
+      const query = document.getElementById("majorInput").value.trim();
+      if (!STATE.selectedUniversity) return;
+
+      const schoolName = STATE.selectedUniversity.학교명;
+
+      let filtered = STATE.majors.filter(item => item.학교명 === schoolName);
+
+      if (query.length > 0) {
+        filtered = filtered.filter(item =>
+          includesSmart(item.학과명, query)
+        );
+      }
+
+      filtered = filtered.slice(0, 60);
+
+      renderCardList("majorResults", filtered, item => {
+        const div = document.createElement("div");
+        div.className = "choice-card";
+        div.innerHTML = `
+          <div class="choice-top">
+            <div>
+              <h3>${item.학과명}</h3>
+              <p>${item.수업연한 || "연한 미상"} · 모집정원 ${Number(item.입학정원수 || 0)}명</p>
+            </div>
+            <div class="icon-badge">📘</div>
+          </div>
+        `;
+        div.onclick = () => selectMajor(item);
+        return div;
+      });
+    }
+
+    function selectMajor(major) {
+      STATE.selectedMajor = major;
+
+      document.getElementById("selectedMajorTitle").textContent = major.학과명;
+      document.getElementById("selectedMajorMeta").textContent =
+        `${major.학교명} · ${major.시도명 || "지역 미상"} · 모집정원 ${Number(major.입학정원수 || 0)}명`;
+
+      goToScreen("screen5", 4);
+    }
+
+    // ---------- 예측 ----------
+    function runPrediction() {
+      const grade = parseFloat(document.getElementById("gradeInput").value);
+      const track = document.getElementById("trackSelect").value;
+
+      if (!STATE.selectedUniversity || !STATE.selectedMajor) {
+        alert("대학과 학과를 먼저 선택해주세요.");
+        return;
+      }
+
+      if (Number.isNaN(grade) || grade < 1 || grade > 9) {
+        alert("내신 등급을 1.0 ~ 9.0 사이로 입력해주세요.");
+        return;
+      }
+
+      const quota = Number(STATE.selectedMajor.입학정원수 || 0);
+      const regionMatch = String(STATE.selectedUniversity.시도명 || "").includes(STATE.selectedRegion) ? 1 : 0;
+
+      let score = 0;
+
+      // 내신 기본 점수
+      score += Math.max(0, 100 - ((grade - 1) * 12));
+
+      // 모집정원 보정
+      if (quota >= 100) score += 8;
+      else if (quota >= 50) score += 5;
+      else if (quota >= 20) score += 2;
+      else if (quota > 0 && quota < 10) score -= 8;
+
+      // 지역 보정
+      if (regionMatch) score += 4;
+
+      // 전형 성격 보정
+      if (track === "교과") score += 3;
+      if (track === "정시") score -= 2;
+
+      score = Math.max(18, Math.min(95, Math.round(score)));
+
+      let label = "적정";
+      let className = "predict-fit";
+      let title = "적정 지원";
+      let reason = "입력한 내신과 선택 학과의 모집정원, 지역 조건을 기준으로 비교적 무난한 구간으로 판단했습니다.";
+
+      if (score >= 82) {
+        label = "안정";
+        className = "predict-safe";
+        title = "안정 지원";
+        reason = "내신 조건과 모집정원 기준으로 볼 때 비교적 여유 있는 구간으로 예측됩니다.";
+      } else if (score >= 65) {
+        label = "적정";
+        className = "predict-fit";
+        title = "적정 지원";
+        reason = "가장 현실적인 지원 구간으로 보이며, 경쟁 상황에 따라 결과가 달라질 수 있습니다.";
+      } else if (score >= 48) {
+        label = "상향";
+        className = "predict-up";
+        title = "상향 지원";
+        reason = "도전은 가능하지만 다소 높은 구간으로 보입니다. 유사 학과도 함께 검토하는 것이 좋습니다.";
+      } else {
+        label = "도전";
+        className = "predict-challenge";
+        title = "도전 지원";
+        reason = "현재 입력 기준으로는 다소 높은 목표일 수 있습니다. 대안 학과나 비슷한 레벨 대학도 함께 보시는 것을 권장합니다.";
+      }
+
+      document.getElementById("resultScore").textContent = `${score}%`;
+      document.getElementById("resultMainTitle").textContent = title;
+      document.getElementById("resultBadge").textContent = label;
+      document.getElementById("resultBadge").className = `predict-badge ${className}`;
+      document.getElementById("resultSubText").textContent = `내신 ${grade.toFixed(1)}등급 · ${track} 기준 참고용 예측`;
+      document.getElementById("resultSelectionTitle").textContent = `${STATE.selectedUniversity.학교명} ${STATE.selectedMajor.학과명}`;
+      document.getElementById("resultSelectionMeta").textContent =
+        `${STATE.selectedUniversity.시도명 || "지역 미상"} · 모집정원 ${quota}명 · ${track} 기준 참고`;
+      document.getElementById("resultReason").textContent = reason;
+
+      goToScreen("resultScreen", 5);
+    }
+
+    // ---------- 초기화 ----------
+    window.addEventListener("load", async () => {
+      const saved = localStorage.getItem("ipsiRegion") || "서울";
+      document.getElementById("regionSelect").value = saved;
+      STATE.selectedRegion = saved;
+
+      await loadAppData();
+
+      setStatus("univStatus", "gray", "캐시 데이터 사용 중");
+      setStatus("highStatus", "gray", CONFIG.SCHOOL_API_KEY ? "학교 API 연결됨" : "학교 API 키 연결 전");
+    });
   </script>
 </body>
 </html>
