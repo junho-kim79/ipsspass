@@ -420,17 +420,12 @@
   // API 키 설정
   // 주의: GitHub Public 레포에 올릴 때는 키를 지우세요!
   // ============================================================
-  const CONFIG = {
-    DATA_BASE: "./",
+const CONFIG = {
+  DATA_BASE: "./",
 
-    // 나이스 학교알리미 API (open.neis.go.kr)
-    NEIS_KEY: "3676939f31514d37a21cc35f9aa02cf6",
-    NEIS_ENDPOINT: "https://open.neis.go.kr/hub/schoolInfo",
-
-    // 공공데이터포털 대학알리미 API (data.go.kr)
-    UNIV_KEY: "78f08217ff48ce1eee4558a87d21b5e76b6f51e8cab11637dd553e95bcb35bef",
-    UNIV_ENDPOINT: "https://api.data.go.kr/openapi/tn_pubr_public_univ_major_api"
-  };
+  // 이제 Firebase 서버로 요청 보냄
+  API_BASE: "https://YOUR_FIREBASE_URL/api"
+};
 
   const STATE = {
     universities: [],
@@ -530,7 +525,7 @@
       setStatus("highStatus", "loading", "검색 중...", true);
 
       try {
-        const url = `${CONFIG.NEIS_ENDPOINT}?KEY=${CONFIG.NEIS_KEY}&Type=json&pIndex=1&pSize=30&SCHUL_NM=${encodeURIComponent(query)}`;
+      const url = `${CONFIG.API_BASE}/school?q=${encodeURIComponent(query)}`;
         const res = await fetch(url);
         const data = await res.json();
 
@@ -664,7 +659,7 @@
       // 2. 실시간 API 병행 호출 (결과 있으면 초록불)
       if (CONFIG.UNIV_KEY && query.length >= 2) {
         try {
-          const url = `${CONFIG.UNIV_ENDPOINT}?serviceKey=${encodeURIComponent(CONFIG.UNIV_KEY)}&pageNo=1&numOfRows=20&type=json&univNm=${encodeURIComponent(query)}`;
+          const url = `${CONFIG.API_BASE}/univ?q=${encodeURIComponent(query)}`;
           const res = await fetch(url);
           const data = await res.json();
           const items = data?.response?.body?.items?.item || [];
