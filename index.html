@@ -313,7 +313,7 @@
     <div class="screen" id="screen3">
       <div class="hero">
         <h1>희망 대학을<br>입력해주세요</h1>
-        <p class="subtext">캐시 데이터로 먼저 보여주고,<br>API 성공 시 실시간으로 보강합니다.</p>
+        <p class="subtext">캐시 데이터 기반으로 빠르게 대학 정보를 안내합니다.</p>
       </div>
       <div class="status-row">
         <div id="univStatus" class="status-badge gray">
@@ -654,20 +654,8 @@ const CONFIG = {
         return div;
       });
 
-      // 2. 실시간 API 병행 호출 (결과 있으면 초록불)
-     if (query.length >= 2) {
-        try {
-          const url = `${CONFIG.API_BASE}/univ?q=${encodeURIComponent(query)}`;
-          const res = await fetch(url);
-          const data = await res.json();
-          const items = data?.response?.body?.items?.item || [];
-          if (items.length > 0) {
-            setStatus("univStatus", "green", "실시간 최신");
-          }
-        } catch (e) {
-          // 캐시 유지
-        }
-      }
+      // 2. // 실시간 대학 API는 잠시 비활성화
+setStatus("univStatus", "gray", "캐시 데이터 사용 중");
     }, 300);
   }
 
