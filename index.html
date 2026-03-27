@@ -422,9 +422,7 @@
   // ============================================================
 const CONFIG = {
   DATA_BASE: "./",
-
-  // 이제 Firebase 서버로 요청 보냄
-  API_BASE: "https://YOUR_FIREBASE_URL/api"
+  API_BASE: "/api"
 };
 
   const STATE = {
@@ -576,7 +574,7 @@ const CONFIG = {
 
     schoolTimer = setTimeout(async () => {
       try {
-        const url = `${CONFIG.NEIS_ENDPOINT}?KEY=${CONFIG.NEIS_KEY}&Type=json&pIndex=1&pSize=20&SCHUL_NM=${encodeURIComponent(query)}`;
+        const url = `${CONFIG.API_BASE}/school?q=${encodeURIComponent(query)}`;
         const res = await fetch(url);
         const data = await res.json();
         const rows = data?.schoolInfo?.[1]?.row || [];
@@ -657,7 +655,7 @@ const CONFIG = {
       });
 
       // 2. 실시간 API 병행 호출 (결과 있으면 초록불)
-      if (CONFIG.UNIV_KEY && query.length >= 2) {
+     if (query.length >= 2) {
         try {
           const url = `${CONFIG.API_BASE}/univ?q=${encodeURIComponent(query)}`;
           const res = await fetch(url);
