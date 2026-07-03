@@ -377,6 +377,9 @@
             <div><h3>고입 패스</h3><p>중학생 전용 · 특목고 · 자사고 · 일반고</p></div>
             <div class="icon-badge">🎓</div>
           </div>
+          <p class="helper-text" style="margin-top:8px; text-align:left;">
+            ℹ️ 평준화 지역은 학군 기준 배정, 비평준화 지역은 성적순 배정이에요.
+          </p>
         </button>
         <button class="choice-card" onclick="goToScreen('screen3', 2)">
           <div class="choice-top">
@@ -412,6 +415,16 @@
         <div id="highResults" class="results-wrap"></div>
         <p class="helper-text">나이스 학교알리미 데이터 기반</p>
       </div>
+
+      <div class="field-wrap" id="highCutlineWrap" style="display:none;">
+        <label class="input-label">중학교 내신 석차백분율 (%)</label>
+        <input id="highPercentileInput" class="input-box" type="number"
+          min="1" max="100" step="0.1" placeholder="예: 78 (상위일수록 낮은 숫자 아니고, 상위=높은 숫자)"
+          oninput="checkHighCutline()"/>
+        <p class="helper-text">전교생 중 상위 몇 % 이내인지 입력하세요. (예: 상위 20% → 80)</p>
+        <div id="highCutlineResult" style="margin-top:12px;"></div>
+      </div>
+
       <button class="secondary-button" onclick="goToScreen('screen1', 1)">← 뒤로</button>
     </div>
 
@@ -750,6 +763,9 @@ const CONFIG = {
           div.onclick = () => {
             document.getElementById("highInput").value = item.SCHUL_NM;
             resultsEl.innerHTML = "";
+            document.getElementById("highCutlineWrap").style.display = "block";
+            document.getElementById("highCutlineResult").innerHTML = "";
+            document.getElementById("highPercentileInput").value = "";
           };
           return div;
         });
@@ -759,6 +775,45 @@ const CONFIG = {
         resultsEl.innerHTML = `<div class="empty-text">API가 아직 활성화되지 않았습니다.<br>신청 후 1~2시간 후 다시 시도해주세요.</div>`;
       }
     }, 400);
+  }
+
+  // ============================================================
+  // 고입 - 인문계 진학 참고 판정 (일반적 경향치, 지역/연도별 편차 큼)
+  // ============================================================
+  function checkHighCutline() {
+    const val = parseFloat(document.getElementById("highPercentileInput").value);
+    const resultEl = document.getElementById("highCutlineResult");
+    if (!resultEl) return;
+    if (Number.isNaN(val) || val < 1 || val > 100) {
+      resultEl.innerHTML = "";
+      return;
+    }
+
+    let label, className, msg;
+    if (val >= 80) {
+      label = "안정권"; className = "predict-safe";
+      msg = "최근 몇 년간 일반적 경향상 인문계(일반고) 진학에 특별한 어려움이 없는 구간이에요.";
+    } else if (val >= 60) {
+      label = "무난"; className = "predict-fit";
+      msg = "대부분의 지역에서 인문계 진학에 큰 무리가 없는 구간이지만, 인기 학교 지망 시 학군에 따라 갈릴 수 있어요.";
+    } else if (val >= 40) {
+      label = "지역 확인 필요"; className = "predict-up";
+      msg = "지역·연도에 따라 편차가 큰 구간이에요. 거주 지역이 평준화/비평준화인지, 최근 특성화고 인기 여부를 함께 확인해보세요.";
+    } else {
+      label = "특성화고 고려"; className = "predict-challenge";
+      msg = "구간상 특성화고(실업계)도 함께 열어두고 고려하시는 게 안전해요. 다만 미달로 인문계도 갈 수 있는 지역이 많아졌어요.";
+    }
+
+    resultEl.innerHTML = `
+      <div class="result-card" style="text-align:left;">
+        <span class="predict-badge ${className}">${label}</span>
+        <p style="margin-top:10px;">${msg}</p>
+        <p class="helper-text" style="margin-top:10px;">
+          ⚠️ 이 판정은 공식 데이터가 아닌 일반적 경향 참고용입니다.
+          실제 배정 방식(평준화/비평준화)과 그 해 지원 경쟁률에 따라 크게 달라질 수 있으니,
+          정확한 정보는 거주지 관할 교육청 고입포털에서 확인하세요.
+        </p>
+      </div>`;
   }
 
   // ============================================================
