@@ -145,6 +145,11 @@
       box-shadow: 0 12px 24px rgba(10,132,255,0.25);
       cursor: pointer;
     }
+    .primary-button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
     .secondary-button {
       width: 100%;
       padding: 14px;
@@ -196,11 +201,49 @@
       display: grid; gap: 10px; margin-top: 12px;
       max-height: 310px; overflow-y: auto; padding-right: 4px;
     }
+    /* 검색 결과 로딩 스켈레톤 */
+    .skeleton-card {
+      padding: 18px 16px;
+      border-radius: 22px;
+      background: linear-gradient(90deg, rgba(15,23,42,0.05) 25%, rgba(15,23,42,0.09) 37%, rgba(15,23,42,0.05) 63%);
+      background-size: 400% 100%;
+      animation: shimmer 1.4s ease infinite;
+      height: 58px;
+    }
+    @keyframes shimmer {
+      0% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .inline-loading {
+      display: flex; align-items: center; justify-content: center;
+      gap: 8px; padding: 16px; color: var(--sub); font-size: 0.85rem;
+    }
     .mini-meta { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 8px; }
     .mini-chip {
       padding: 6px 10px; border-radius: 999px;
       background: rgba(10,132,255,0.08); color: var(--blue);
       font-size: 0.76rem; font-weight: 700;
+    }
+    .field-badge {
+      display: inline-flex; align-items: center;
+      padding: 2px 7px; border-radius: 7px;
+      font-size: 0.66rem; font-weight: 800;
+      margin-left: 6px; vertical-align: middle;
+    }
+    .field-badge.new { background: rgba(245,158,11,0.15); color: #b45309; }
+    .field-badge.closed { background: rgba(239,68,68,0.14); color: #b91c1c; }
+    .field-badge.night { background: rgba(110,110,115,0.14); color: var(--sub); }
+    .breakdown-row { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+    .breakdown-row:first-child { margin-top: 4px; }
+    .breakdown-label { width: 104px; font-size: 0.8rem; color: var(--sub); flex-shrink: 0; }
+    .breakdown-bar-wrap {
+      flex: 1; height: 8px; border-radius: 999px;
+      background: rgba(10,132,255,0.08); overflow: hidden;
+    }
+    .breakdown-bar-fill { height: 100%; border-radius: 999px; }
+    .breakdown-value {
+      width: 40px; text-align: right;
+      font-size: 0.8rem; font-weight: 800; color: var(--text); flex-shrink: 0;
     }
     .summary-card, .result-card {
       padding: 16px; border-radius: 22px;
@@ -231,17 +274,77 @@
       border-top-color: var(--blue);
       border-radius: 50%;
       animation: spin 0.7s linear infinite;
+      flex-shrink: 0;
     }
+    .spinner.lg { width: 34px; height: 34px; border-width: 3px; }
     @keyframes spin { to { transform: rotate(360deg); } }
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(16px); }
       to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ==================== 초기 로딩 오버레이 ==================== */
+    #initLoading {
+      position: absolute;
+      inset: 0;
+      z-index: 50;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.97), rgba(247,248,252,0.97));
+      border-radius: 30px;
+      transition: opacity 0.35s ease, visibility 0.35s ease;
+    }
+    #initLoading.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    #initLoading .brand-mark {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    #initLoading .brand-mark span { color: var(--blue); }
+    #initLoading .init-text {
+      font-size: 0.85rem;
+      color: var(--sub);
+      font-weight: 600;
+    }
+    #initLoading .init-bar {
+      width: 140px;
+      height: 4px;
+      border-radius: 999px;
+      background: rgba(10,132,255,0.12);
+      overflow: hidden;
+    }
+    #initLoading .init-bar-fill {
+      width: 40%;
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--blue), #3AA0FF);
+      animation: barSlide 1.1s ease-in-out infinite;
+    }
+    @keyframes barSlide {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(250%); }
     }
   </style>
 </head>
 <body>
 <div class="phone-shell">
   <div class="view-container">
+
+    <!-- 초기 데이터 로딩 오버레이 -->
+    <div id="initLoading">
+      <div class="spinner lg"></div>
+      <div class="brand-mark">ipsi<span>PASS</span></div>
+      <div class="init-text" id="initLoadingText">데이터 불러오는 중...</div>
+      <div class="init-bar"><div class="init-bar-fill"></div></div>
+    </div>
+
     <div class="dev-credit">공공데이터 기반 진학 예측 서비스 · ipsiPASS</div>
     <div class="topbar">
       <div class="brand">ipsi<span>PASS</span></div>
@@ -375,19 +478,20 @@
         <p id="selectedMajorMeta">학교 / 지역 / 모집정원</p>
       </div>
       <div class="field-wrap" style="margin-top:14px;">
-        <label class="input-label">내신 등급</label>
-        <input id="gradeInput" class="input-box" type="number"
-          min="1" max="9" step="0.1" placeholder="예: 2.3"/>
-      </div>
-      <div class="field-wrap">
-        <label class="input-label">전형 감각</label>
-        <select id="trackSelect" class="select-box">
+        <label class="input-label">전형 유형</label>
+        <select id="trackSelect" class="select-box" onchange="onTrackChange()">
           <option value="교과">학생부교과 중심</option>
           <option value="종합">학생부종합 중심</option>
           <option value="정시">정시 참고형</option>
         </select>
       </div>
-      <button class="primary-button" onclick="runPrediction()">예측 결과 보기</button>
+      <div class="field-wrap" id="gradeFieldWrap">
+        <label class="input-label" id="gradeFieldLabel">내신 등급</label>
+        <input id="gradeInput" class="input-box" type="number"
+          min="1" max="9" step="0.1" placeholder="예: 2.3"/>
+        <p class="helper-text" id="gradeFieldHelper">1.0(최상위) ~ 9.0(최하위) 사이로 입력하세요.</p>
+      </div>
+      <button class="primary-button" id="predictBtn" onclick="runPrediction()">예측 결과 보기</button>
       <button class="secondary-button" onclick="goToScreen('screen4', 3)">← 학과 다시 선택</button>
     </div>
 
@@ -402,6 +506,10 @@
         <h3 id="resultMainTitle">적정 지원</h3>
         <div id="resultBadge" class="predict-badge predict-fit">적정</div>
         <p id="resultSubText" style="margin-top:10px;">공공데이터 기반 · 내신 2.3등급 기준 참고용 예측</p>
+      </div>
+      <div class="result-card" style="margin-top:12px;">
+        <h3>세부 점수 구성</h3>
+        <div id="scoreBreakdown"></div>
       </div>
       <div class="result-card" style="margin-top:12px;">
         <h3 id="resultSelectionTitle">선택 대학 학과</h3>
@@ -431,11 +539,44 @@ const CONFIG = {
   const STATE = {
     universities: [],
     majors: [],
+    quotaByField: {},
     selectedRegion: "대구",
     selectedSchool: "",
     selectedUniversity: null,
     selectedMajor: null
   };
+
+  // 학과명 → 계열 추정용 키워드 (전국대학별입학정원원정보표준데이터.csv의 계열 구분에 맞춤)
+  const FIELD_KEYWORDS = {
+    공학: ["공학","컴퓨터","전자","기계","전기","소프트웨어","자동차","화학공학","토목","건축","반도체","정보통신","산업공학","항공","로봇","IT","에너지"],
+    의약: ["의학","간호","약학","치의","한의","보건","임상","방사선","응급구조","재활","의료"],
+    자연: ["수학","물리","화학과","생명","환경","지구과학","통계","해양","농업","산림","식품","동물"],
+    교육: ["교육학","유아교육","초등교육","특수교육","교육과"],
+    사회: ["경영","경제","행정","사회복지","법학","정치","무역","회계","광고","신문방송","심리","사회학"],
+    인문: ["국어","영어","일본어","중국어","철학","역사","문예창작","문헌정보","언어","문학"],
+    예체능: ["미술","음악","체육","디자인","연극","영화","무용","스포츠"]
+  };
+
+  function guessFieldGroup(majorName = "") {
+    for (const [group, keywords] of Object.entries(FIELD_KEYWORDS)) {
+      if (keywords.some(k => majorName.includes(k))) return group;
+    }
+    return null;
+  }
+
+  // 선택한 대학에서 이 학과 계열이 정원상 큰 비중인지에 따라 가점/감점
+  function getFieldGroupBonus(univName, majorName) {
+    const group = guessFieldGroup(majorName);
+    const row = STATE.quotaByField[univName];
+    if (!group || !row || !row.총계) return 0;
+    const groupVal = row[group] || 0;
+    if (!groupVal) return 0;
+    const ratio = groupVal / row.총계;
+    if (ratio >= 0.5) return 3;
+    if (ratio >= 0.25) return 1;
+    if (ratio < 0.05) return -2;
+    return 0;
+  }
 
   // ============================================================
   // 유틸
@@ -456,8 +597,20 @@ const CONFIG = {
     const el = document.getElementById(elId);
     if (!el) return;
     el.className = `status-badge ${type}`;
-    const dotClass = spinning ? "dot pulse" : "dot";
-    el.innerHTML = `<span class="${dotClass}"></span><span>${text}</span>`;
+    const dotHtml = spinning ? `<span class="spinner"></span>` : `<span class="dot"></span>`;
+    el.innerHTML = `${dotHtml}<span>${text}</span>`;
+  }
+
+  // 검색 결과 자리에 스켈레톤 카드(로딩 표시) 렌더링
+  function renderSkeleton(targetId, count = 3) {
+    const target = document.getElementById(targetId);
+    if (!target) return;
+    target.innerHTML = "";
+    for (let i = 0; i < count; i++) {
+      const div = document.createElement("div");
+      div.className = "skeleton-card";
+      target.appendChild(div);
+    }
   }
 
   function getChoseong(text = "") {
@@ -486,6 +639,36 @@ const CONFIG = {
     }
   }
 
+  // 전국대학별입학정원원정보표준데이터.csv 파싱 → 학교명별 계열 정원 맵
+  async function loadQuotaByFieldCSV(path) {
+    const map = {};
+    try {
+      const res = await fetch(path);
+      if (!res.ok) throw new Error(`${path} 로드 실패`);
+      const text = await res.text();
+      const lines = text.split(/\r?\n/).filter(l => l.trim().length > 0);
+      lines.slice(1).forEach(line => {
+        const cols = line.split(",");
+        if (cols.length < 10) return;
+        const name = cols[0]?.trim();
+        if (!name) return;
+        map[name] = {
+          총계: Number(cols[2]) || 0,
+          인문: Number(cols[3]) || 0,
+          사회: Number(cols[4]) || 0,
+          교육: Number(cols[5]) || 0,
+          공학: Number(cols[6]) || 0,
+          자연: Number(cols[7]) || 0,
+          의약: Number(cols[8]) || 0,
+          예체능: Number(cols[9]) || 0
+        };
+      });
+    } catch (err) {
+      console.warn("계열 정원 데이터 로드 실패:", err);
+    }
+    return map;
+  }
+
   function renderCardList(targetId, items, renderer) {
     const target = document.getElementById(targetId);
     if (!target) return;
@@ -501,13 +684,23 @@ const CONFIG = {
   // 앱 데이터 로드 (JSON 캐시)
   // ============================================================
   async function loadAppData() {
-    const [universities, majors] = await Promise.all([
+    const initTextEl = document.getElementById("initLoadingText");
+    if (initTextEl) initTextEl.textContent = "대학·학과 데이터 불러오는 중...";
+
+    const [universities, majors, quotaByField] = await Promise.all([
       loadJSON(`${CONFIG.DATA_BASE}universities_app.json`),
-      loadJSON(`${CONFIG.DATA_BASE}majors_active_undergrad_app.json`)
+      loadJSON(`${CONFIG.DATA_BASE}majors_active_undergrad_app.json`),
+      loadQuotaByFieldCSV(`${CONFIG.DATA_BASE}전국대학별입학정원원정보표준데이터.csv`)
     ]);
     STATE.universities = Array.isArray(universities) ? universities : [];
     STATE.majors = Array.isArray(majors) ? majors : [];
-    console.log(`✅ 대학 ${STATE.universities.length}개 / 학과 ${STATE.majors.length}개 로드`);
+    STATE.quotaByField = quotaByField || {};
+    console.log(`✅ 대학 ${STATE.universities.length}개 / 학과 ${STATE.majors.length}개 / 계열정원 ${Object.keys(STATE.quotaByField).length}개교 로드`);
+  }
+
+  function hideInitLoading() {
+    const overlay = document.getElementById("initLoading");
+    if (overlay) overlay.classList.add("hidden");
   }
 
   // ============================================================
@@ -520,11 +713,15 @@ const CONFIG = {
     const resultsEl = document.getElementById("highResults");
     resultsEl.innerHTML = "";
 
-    if (query.length < 2) return;
+    if (query.length < 2) {
+      setStatus("highStatus", "gray", "검색어 입력 시 자동 조회");
+      return;
+    }
+
+    setStatus("highStatus", "loading", "검색 중...", true);
+    renderSkeleton("highResults", 3);
 
     highTimer = setTimeout(async () => {
-      setStatus("highStatus", "loading", "검색 중...", true);
-
       try {
       const url = `${CONFIG.API_BASE}/school?q=${encodeURIComponent(query)}`;
         const res = await fetch(url);
@@ -575,6 +772,8 @@ const CONFIG = {
     resultsEl.innerHTML = "";
     if (query.length < 2) return;
 
+    renderSkeleton("schoolResults", 2);
+
     schoolTimer = setTimeout(async () => {
       try {
         const url = `${CONFIG.API_BASE}/school?q=${encodeURIComponent(query)}`;
@@ -618,6 +817,8 @@ const CONFIG = {
     const resultsEl = document.getElementById("univResults");
     resultsEl.innerHTML = "";
     if (query.length < 1) return;
+
+    renderSkeleton("univResults", 3);
 
     univTimer = setTimeout(async () => {
       // 1. JSON 캐시로 즉시 결과 보여주기
@@ -693,15 +894,30 @@ setStatus("univStatus", "gray", "캐시 데이터 사용 중");
     renderCardList("majorResults", filtered, item => {
       const div = document.createElement("div");
       div.className = "choice-card";
+
+      const statusRaw = String(item.상태 || "").trim();
+      const isClosed = /폐지|모집중단|모집정지/.test(statusRaw);
+      const statusBadge = statusRaw && statusRaw !== "기존"
+        ? `<span class="field-badge ${isClosed ? "closed" : "new"}">${statusRaw}</span>`
+        : "";
+      const nightBadge = String(item.주야 || "").includes("야간")
+        ? `<span class="field-badge night">야간</span>` : "";
+
       div.innerHTML = `
         <div class="choice-top">
           <div>
-            <h3>${item.학과명}</h3>
+            <h3>${item.학과명}${statusBadge}${nightBadge}</h3>
             <p>${item.수업연한 || ""} · 모집정원 ${Number(item.입학정원수 || 0)}명</p>
           </div>
           <div class="icon-badge">📘</div>
         </div>`;
-      div.onclick = () => selectMajor(item);
+
+      if (isClosed) {
+        div.style.opacity = "0.5";
+        div.style.cursor = "not-allowed";
+      } else {
+        div.onclick = () => selectMajor(item);
+      }
       return div;
     });
   }
@@ -712,63 +928,153 @@ setStatus("univStatus", "gray", "캐시 데이터 사용 중");
     document.getElementById("selectedMajorMeta").textContent =
       `${major.학교명} · ${major.시도명 || ""} · 모집정원 ${Number(major.입학정원수 || 0)}명`;
     goToScreen("screen5", 4);
+    onTrackChange();
+  }
+
+  // 전형 유형에 따라 내신/수능 입력 필드를 전환
+  function onTrackChange() {
+    const track = document.getElementById("trackSelect").value;
+    const label = document.getElementById("gradeFieldLabel");
+    const input = document.getElementById("gradeInput");
+    const helper = document.getElementById("gradeFieldHelper");
+    if (!label || !input || !helper) return;
+
+    input.value = "";
+    if (track === "정시") {
+      label.textContent = "수능 백분위";
+      input.setAttribute("min", "1");
+      input.setAttribute("max", "100");
+      input.setAttribute("placeholder", "예: 88.5");
+      helper.textContent = "영역 평균 백분위를 1.0 ~ 100.0 사이로 입력하세요.";
+    } else {
+      label.textContent = "내신 등급";
+      input.setAttribute("min", "1");
+      input.setAttribute("max", "9");
+      input.setAttribute("placeholder", "예: 2.3");
+      helper.textContent = "1.0(최상위) ~ 9.0(최하위) 사이로 입력하세요.";
+    }
   }
 
   // ============================================================
   // 예측
   // ============================================================
+  // 점수 구성 항목을 막대그래프로 렌더링
+  function renderBreakdown(items) {
+    const wrap = document.getElementById("scoreBreakdown");
+    if (!wrap) return;
+    const maxAbs = Math.max(10, ...items.map(i => Math.abs(i.value)));
+    wrap.innerHTML = items.map(i => {
+      const pct = Math.min(100, Math.round((Math.abs(i.value) / maxAbs) * 100));
+      const isNeg = i.value < 0;
+      const barColor = isNeg
+        ? "linear-gradient(90deg,#ef4444,#f87171)"
+        : "linear-gradient(90deg,#0A84FF,#3AA0FF)";
+      const sign = i.value > 0 ? "+" : "";
+      return `<div class="breakdown-row">
+        <div class="breakdown-label">${i.label}</div>
+        <div class="breakdown-bar-wrap"><div class="breakdown-bar-fill" style="width:${pct}%; background:${barColor};"></div></div>
+        <div class="breakdown-value">${sign}${i.value}</div>
+      </div>`;
+    }).join("");
+  }
+
   function runPrediction() {
-    const grade = parseFloat(document.getElementById("gradeInput").value);
     const track = document.getElementById("trackSelect").value;
+    const rawValue = parseFloat(document.getElementById("gradeInput").value);
 
     if (!STATE.selectedUniversity || !STATE.selectedMajor) {
       alert("대학과 학과를 먼저 선택해주세요."); return;
     }
-    if (Number.isNaN(grade) || grade < 1 || grade > 9) {
-      alert("내신 등급을 1.0 ~ 9.0 사이로 입력해주세요."); return;
-    }
 
-    const quota = Number(STATE.selectedMajor.입학정원수 || 0);
-    const regionKw = STATE.selectedRegion;
-    const regionMatch = String(STATE.selectedUniversity.시도명 || "").includes(regionKw) ? 1 : 0;
-
-    let score = Math.max(0, 100 - ((grade - 1) * 12));
-    if (quota >= 100) score += 8;
-    else if (quota >= 50) score += 5;
-    else if (quota >= 20) score += 2;
-    else if (quota > 0 && quota < 10) score -= 8;
-    if (regionMatch) score += 4;
-    if (track === "교과") score += 3;
-    if (track === "정시") score -= 2;
-    score = Math.max(18, Math.min(95, Math.round(score)));
-
-    let label, className, title, reason;
-    if (score >= 82) {
-      label="안정"; className="predict-safe"; title="안정 지원";
-      reason="내신 조건과 모집정원 기준으로 비교적 여유 있는 구간으로 예측됩니다.";
-    } else if (score >= 65) {
-      label="적정"; className="predict-fit"; title="적정 지원";
-      reason="가장 현실적인 지원 구간으로 보이며, 경쟁 상황에 따라 결과가 달라질 수 있습니다.";
-    } else if (score >= 48) {
-      label="상향"; className="predict-up"; title="상향 지원";
-      reason="도전은 가능하지만 다소 높은 구간입니다. 유사 학과도 함께 검토하세요.";
+    let academicLabel, academicScore;
+    if (track === "정시") {
+      if (Number.isNaN(rawValue) || rawValue < 1 || rawValue > 100) {
+        alert("수능 백분위를 1.0 ~ 100.0 사이로 입력해주세요."); return;
+      }
+      academicLabel = "수능 백분위";
+      academicScore = rawValue;
     } else {
-      label="도전"; className="predict-challenge"; title="도전 지원";
-      reason="현재 입력 기준으로 다소 높은 목표일 수 있습니다. 대안 학과도 함께 보시길 권장합니다.";
+      if (Number.isNaN(rawValue) || rawValue < 1 || rawValue > 9) {
+        alert("내신 등급을 1.0 ~ 9.0 사이로 입력해주세요."); return;
+      }
+      academicLabel = "내신 등급";
+      academicScore = Math.max(0, 100 - ((rawValue - 1) * 12));
     }
 
-    document.getElementById("resultScore").textContent = `${score}%`;
-    document.getElementById("resultMainTitle").textContent = title;
-    document.getElementById("resultBadge").textContent = label;
-    document.getElementById("resultBadge").className = `predict-badge ${className}`;
-    document.getElementById("resultSubText").textContent = `내신 ${grade.toFixed(1)}등급 · ${track} 기준 참고용 예측`;
-    document.getElementById("resultSelectionTitle").textContent =
-      `${STATE.selectedUniversity.학교명} ${STATE.selectedMajor.학과명}`;
-    document.getElementById("resultSelectionMeta").textContent =
-      `${STATE.selectedUniversity.시도명 || ""} · 모집정원 ${quota}명 · ${track} 기준`;
-    document.getElementById("resultReason").textContent = reason;
+    // 계산 중 버튼에 로딩 표시 (짧은 연산이지만 클릭 피드백을 명확히)
+    const btn = document.getElementById("predictBtn");
+    const originalLabel = btn.textContent;
+    btn.disabled = true;
+    btn.innerHTML = `<span class="spinner" style="border-color:rgba(255,255,255,0.4); border-top-color:#fff; vertical-align:-3px; margin-right:6px;"></span>계산 중...`;
 
-    goToScreen("resultScreen", 5);
+    setTimeout(() => {
+      const quota = Number(STATE.selectedMajor.입학정원수 || 0);
+      const regionKw = STATE.selectedRegion;
+      const regionMatch = String(STATE.selectedUniversity.시도명 || "").includes(regionKw) ? 1 : 0;
+
+      let quotaBonus = 0;
+      if (quota >= 100) quotaBonus = 8;
+      else if (quota >= 50) quotaBonus = 5;
+      else if (quota >= 20) quotaBonus = 2;
+      else if (quota > 0 && quota < 10) quotaBonus = -8;
+
+      const regionBonus = regionMatch ? 4 : 0;
+
+      let trackBonus = 0;
+      if (track === "교과") trackBonus = 3;
+      else if (track === "정시") trackBonus = -2;
+
+      const nightPenalty = String(STATE.selectedMajor.주야 || "").includes("야간") ? -3 : 0;
+
+      const fieldBonus = getFieldGroupBonus(STATE.selectedUniversity.학교명, STATE.selectedMajor.학과명);
+
+      let score = academicScore + quotaBonus + regionBonus + trackBonus + nightPenalty + fieldBonus;
+      score = Math.max(18, Math.min(95, Math.round(score)));
+
+      let label, className, title, reason;
+      if (score >= 82) {
+        label="안정"; className="predict-safe"; title="안정 지원";
+        reason="내신/수능 조건과 모집정원 기준으로 비교적 여유 있는 구간으로 예측됩니다.";
+      } else if (score >= 65) {
+        label="적정"; className="predict-fit"; title="적정 지원";
+        reason="가장 현실적인 지원 구간으로 보이며, 경쟁 상황에 따라 결과가 달라질 수 있습니다.";
+      } else if (score >= 48) {
+        label="상향"; className="predict-up"; title="상향 지원";
+        reason="도전은 가능하지만 다소 높은 구간입니다. 유사 학과도 함께 검토하세요.";
+      } else {
+        label="도전"; className="predict-challenge"; title="도전 지원";
+        reason="현재 입력 기준으로 다소 높은 목표일 수 있습니다. 대안 학과도 함께 보시길 권장합니다.";
+      }
+
+      document.getElementById("resultScore").textContent = `${score}%`;
+      document.getElementById("resultMainTitle").textContent = title;
+      document.getElementById("resultBadge").textContent = label;
+      document.getElementById("resultBadge").className = `predict-badge ${className}`;
+      document.getElementById("resultSubText").textContent =
+        track === "정시"
+          ? `수능 백분위 ${rawValue.toFixed(1)} · ${track} 기준 참고용 예측`
+          : `내신 ${rawValue.toFixed(1)}등급 · ${track} 기준 참고용 예측`;
+      document.getElementById("resultSelectionTitle").textContent =
+        `${STATE.selectedUniversity.학교명} ${STATE.selectedMajor.학과명}`;
+      document.getElementById("resultSelectionMeta").textContent =
+        `${STATE.selectedUniversity.시도명 || ""} · 모집정원 ${quota}명 · ${track} 기준`;
+      document.getElementById("resultReason").textContent = reason;
+
+      const breakdown = [
+        { label: academicLabel, value: Math.round(academicScore) },
+        { label: "모집정원 규모", value: quotaBonus },
+        { label: "지역 매칭", value: regionBonus },
+        { label: "전형 유형", value: trackBonus }
+      ];
+      if (nightPenalty) breakdown.push({ label: "주간/야간", value: nightPenalty });
+      if (fieldBonus) breakdown.push({ label: "계열 내 정원 비중", value: fieldBonus });
+      renderBreakdown(breakdown);
+
+      btn.disabled = false;
+      btn.textContent = originalLabel;
+
+      goToScreen("resultScreen", 5);
+    }, 450);
   }
 
   // ============================================================
@@ -783,6 +1089,8 @@ setStatus("univStatus", "gray", "캐시 데이터 사용 중");
 
     setStatus("univStatus", "gray", "캐시 데이터 사용 중");
     setStatus("highStatus", "gray", "검색어 입력 시 자동 조회");
+
+    hideInitLoading();
   });
 </script>
 </body>
