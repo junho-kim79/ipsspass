@@ -394,6 +394,31 @@
     .seg{display:flex;background:#fff;border:1px solid var(--linev);border-radius:14px;padding:4px;gap:4px;margin-bottom:8px}
     .seg button{flex:1;border:none;background:none;padding:9px 6px;border-radius:10px;font-weight:800;font-size:.8rem;color:var(--sub);cursor:pointer}
     .seg button.on{background:var(--blue);color:#fff}
+
+    /* ==================== D1 테마: 짙은 초록 + 주황 ==================== */
+    :root{--blue:#E8560A;--blue2:#C94700;--ink:#12351F;--text:#12351F;--sub:#4E6356;--sub2:#8C998F;--mint:#E8560A;--mint2:#FDE6D8;--bgv:#F7F3EC;--linev:#E3DDD1}
+    body{background:#E6E0D4}
+    .hero2{background:#12351F;border-radius:22px}
+    .hero2:before{left:auto;right:-40px;top:auto;bottom:-40px;width:170px;height:170px;border-radius:50%;background:#E8560A}
+    .hero2:after{content:'✦';filter:none;background:none;width:auto;height:auto;top:14px;right:18px;color:#F5A36B;font-size:1.6rem}
+    .hero2 small{color:#F5A36B;opacity:1}
+    .hero2 h1{font-size:1.75rem;letter-spacing:-.04em}.hero2 h1 em{font-style:normal;color:#FF7A2E}
+    .stats div{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.18)}
+    .brand{color:#12351F}.brand span{color:#E8560A}.brand:after{background:#12351F}
+    .choice-card{border:none;box-shadow:0 2px 0 #E3DDD1}
+    .icon-badge{background:#12351F;color:#fff}.icon-badge.mint{background:#E8560A;color:#fff}
+    .beta-badge{background:#12351F;color:#fff}
+    .src{border-color:#CFC6B4}.src h4{color:#E8560A}.src li:before{color:#E8560A}
+    .q2{font-size:1.15rem}
+    .primary-button{background:#12351F;box-shadow:0 10px 20px rgba(18,53,31,.25)}
+    .hs-tip{background:#FDEBDD}.hs-tip b{color:#C94700}
+    .seg button.on{background:#12351F}
+    .status-badge.green{color:#12351F;background:#E3EDE6}
+    .predict-safe{background:#E3EDE6;color:#12351F}.predict-fit{background:#FDE6D8;color:#C94700}
+    .gbar i:nth-child(1){background:#F3D9CE}.gbar i:nth-child(2){background:#F9D3B5}.gbar i:nth-child(3){background:#F5A36B}.gbar i:nth-child(4){background:#9BB8A5}
+    .gme b{background:#12351F}.gme i{background:#12351F}.gme:after{border-color:#12351F}
+    .breakdown-bar-fill{background:#E8560A!important}
+    .input-box:focus,.select-box:focus{border-color:rgba(232,86,10,.55);box-shadow:0 0 0 4px rgba(232,86,10,.12)}
   </style>
 </head>
 <body>
@@ -431,7 +456,7 @@
     <!-- 화면 1: 메인 -->
     <div class="screen active" id="screen1">
       <div class="hero2"><small>공공데이터 기반 진학 예측</small>
-        <h1>내 성적으로<br>어디까지 갈 수 있을까?</h1>
+        <h1>내 성적으로<br><em>어디까지</em> 갈 수 있을까?</h1>
         <p>교육부·대학 공시 데이터로 진학 가능성을<br>안정·적정·상향·도전으로 알려드려요.</p>
         <div class="stats"><div><b id="statUniv">390+</b><span>대학</span></div><div><b id="statMajor">13,000+</b><span>학과</span></div><div><b>무료</b><span>가입 없이</span></div></div>
       </div>
@@ -1215,7 +1240,7 @@ setStatus("univStatus", "gray", "캐시 데이터 사용 중");
       }
 
       document.getElementById("resultScore").innerHTML = `${score}<small>%</small>`;
-      document.getElementById("resultScore").style.color = { "predict-safe": "#10B9A0", "predict-fit": "#2F5BFF", "predict-up": "#E09100", "predict-challenge": "#FF6A55" }[className];
+      document.getElementById("resultScore").style.color = { "predict-safe": "#12351F", "predict-fit": "#E8560A", "predict-up": "#B86E00", "predict-challenge": "#B3261E" }[className];
       // 게이지: 18~95 점수를 도전(0~25%)·상향·적정·안정 구간에 배치
       const zones = [[18, 48], [48, 65], [65, 82], [82, 96]];
       const zi = zones.findIndex(([a, b]) => score >= a && score < b);
