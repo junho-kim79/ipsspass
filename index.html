@@ -418,6 +418,37 @@
     .gbar i:nth-child(1){background:#F3D9CE}.gbar i:nth-child(2){background:#F9D3B5}.gbar i:nth-child(3){background:#F5A36B}.gbar i:nth-child(4){background:#9BB8A5}
     .gme b{background:#12351F}.gme i{background:#12351F}.gme:after{border-color:#12351F}
     .breakdown-bar-fill{background:#E8560A!important}
+    .quiz-card{background:#FFF6EE}
+    .menu-panel{position:absolute;inset:0;z-index:40;background:rgba(18,53,31,.35);border-radius:30px;display:none}
+    .menu-panel.on{display:block}
+    .menu-box{position:absolute;top:64px;right:14px;left:14px;background:#fff;border-radius:22px;padding:14px;box-shadow:0 20px 40px rgba(18,53,31,.25)}
+    .menu-h{font-size:.76rem;font-weight:900;color:#E8560A;margin:2px 6px 8px}
+    .menu-box button{display:block;width:100%;text-align:left;border:none;background:#F7F3EC;border-radius:14px;padding:13px 14px;margin-top:7px;font-size:.95rem;font-weight:800;color:#12351F;cursor:pointer}
+    .menu-box button small{display:block;font-size:.72rem;font-weight:600;color:var(--sub);margin-top:2px}
+    .menu-f{text-align:center;font-size:.7rem;color:var(--sub2);margin-top:12px}
+    .qz-top{display:flex;align-items:center;gap:10px;margin:8px 2px 18px;font-size:.78rem;font-weight:800;color:var(--sub)}
+    .qz-bar{flex:1;height:8px;border-radius:8px;background:#E3DDD1;overflow:hidden}.qz-bar i{display:block;height:100%;background:#E8560A;border-radius:8px;transition:width .3s}
+    .qz-q{font-size:1.45rem;line-height:1.4;font-weight:900;color:#12351F;margin:6px 2px 18px;letter-spacing:-.03em;min-height:4em}
+    .qz-opts{display:grid;gap:10px}
+    .qz-opts button{text-align:left;border:1.5px solid #E3DDD1;background:#fff;border-radius:18px;padding:16px 16px;font-size:.98rem;font-weight:700;color:#12351F;cursor:pointer;transition:all .15s}
+    .qz-opts button:hover{border-color:#E8560A}.qz-opts button.on{background:#12351F;color:#fff;border-color:#12351F}
+    .qr-hero{border-radius:22px;background:#12351F;color:#fff;padding:22px 20px;position:relative;overflow:hidden;margin-top:6px}
+    .qr-hero:before{content:'';position:absolute;right:-40px;bottom:-40px;width:150px;height:150px;border-radius:50%;background:#E8560A}
+    .qr-hero small{color:#F5A36B;font-weight:800;font-size:.74rem;position:relative}
+    .qr-hero h2{margin:6px 0 0;font-size:1.7rem;font-weight:900;position:relative;letter-spacing:-.03em}.qr-hero h2 em{font-style:normal;color:#FF7A2E}
+    .qr-hero p{margin:8px 0 0;font-size:.86rem;line-height:1.6;opacity:.9;position:relative}
+    .qr-split{margin-top:14px;position:relative}.qr-split .l{display:flex;justify-content:space-between;font-size:.74rem;font-weight:800;margin-bottom:6px}
+    .qr-split .b{height:12px;border-radius:12px;background:#F5A36B;overflow:hidden}.qr-split .b i{display:block;height:100%;background:#fff}
+    .qr-sec{margin-top:12px;background:#fff;border:1px solid var(--linev);border-radius:20px;padding:16px}
+    .qr-sec h3{margin:0 0 10px;font-size:1rem;font-weight:900;color:#12351F}
+    .qr-rank{display:flex;align-items:center;gap:8px;margin-top:8px;font-size:.84rem;font-weight:700}
+    .qr-rank span{width:52px;flex-shrink:0}.qr-rank .t{flex:1;height:10px;border-radius:10px;background:#F1ECE2;overflow:hidden}.qr-rank .t i{display:block;height:100%;background:#E8560A;border-radius:10px}
+    .qr-rank b{width:34px;text-align:right;font-size:.78rem}
+    .qr-chips{display:flex;flex-wrap:wrap;gap:6px}.qr-chips span{font-size:.8rem;font-weight:800;padding:7px 11px;border-radius:999px;background:#F7F3EC;color:#12351F}
+    .qr-stat{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .qr-stat div{background:#F7F3EC;border-radius:14px;padding:12px}.qr-stat span{font-size:.7rem;color:var(--sub);font-weight:700}.qr-stat b{display:block;font-size:1.25rem;font-weight:900;margin-top:2px;color:#12351F}
+    .qr-major{display:flex;align-items:center;gap:10px;padding:12px 2px;border-top:1px dashed #E3DDD1;cursor:pointer}
+    .qr-major:first-of-type{border-top:none}.qr-major .n{font-size:.9rem;font-weight:800}.qr-major .m{font-size:.74rem;color:var(--sub);margin-top:2px}.qr-major .go{margin-left:auto;font-size:.74rem;font-weight:900;color:#E8560A;white-space:nowrap}
     .nav-btn{border:1px solid var(--linev);background:#fff;color:#12351F;border-radius:999px;padding:6px 10px;font-size:.74rem;font-weight:800;cursor:pointer;display:none}
     .nav-btn.on{display:inline-block}
     .input-box:focus,.select-box:focus{border-color:rgba(232,86,10,.55);box-shadow:0 0 0 4px rgba(232,86,10,.12)}
@@ -440,7 +471,8 @@
       <div class="brand" onclick="goHome()" style="cursor:pointer;">ipsi<span>PASS</span></div>
       <div style="display:flex;gap:6px;align-items:center">
         <button class="nav-btn" id="navBack" onclick="goBack()" aria-label="뒤로">‹ 뒤로</button>
-        <button class="nav-btn" id="navHome" onclick="goHome()" aria-label="처음으로">⌂ 처음</button>
+        <button class="nav-btn on" onclick="toggleMenu()" aria-label="메뉴">☰ 메뉴</button>
+        <button class="nav-btn" id="navHome" onclick="goHome()" aria-label="처음으로" style="display:none!important">⌂ 처음</button>
         <div class="step-chip" id="stepChip">STEP 1</div>
       </div>
     </div>
@@ -483,7 +515,14 @@
           </div>
         </button>
       </div>
-      <div class="src"><h4>이런 공공데이터로 알려드려요</h4><ul>
+      <button class="choice-card quiz-card" onclick="startQuiz()">
+        <div class="choice-top">
+          <div class="icon-badge" style="background:#F5A36B;color:#12351F"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6V14"/><path d="M12 17.5h.01"/></svg></div>
+          <div style="flex:1"><h3>나는 문과형? 이과형?</h3><p>10문항 테스트 · 나에게 맞는 계열과 학과</p></div>
+          <div style="color:var(--sub2);font-size:1.3rem;font-weight:700">›</div>
+        </div>
+      </button>
+      <div class="src" style="margin-top:14px"><h4>이런 공공데이터로 알려드려요</h4><ul>
         <li>교육부 나이스(NEIS) 학교 기본정보</li>
         <li>학교알리미 학년별·학급별 학생 수 공시</li>
         <li>공공데이터포털 전국 대학·학과·입학정원 표준데이터</li></ul></div>
@@ -606,6 +645,26 @@
       <button class="secondary-button" onclick="goBack('screen4', 3)">← 학과 다시 선택</button>
     </div>
 
+    <div id="menuPanel" class="menu-panel" onclick="if(event.target===this)toggleMenu()">
+      <div class="menu-box">
+        <div class="menu-h">메뉴</div>
+        <button onclick="toggleMenu();goHome()">⌂ 처음 화면</button>
+        <button onclick="toggleMenu();goToScreen('screen2',2)">🏫 고입 패스 <small>고등학교 정보·진학 판정</small></button>
+        <button onclick="toggleMenu();goToScreen('screen3',2)">🎓 대입 패스 <small>대학·학과 합격 예측</small></button>
+        <button onclick="toggleMenu();startQuiz()">❓ 문과형? 이과형? <small>계열·학과·취업 방향 테스트</small></button>
+        <div class="menu-f">공공데이터 기반 · 만든 사람 김동원</div>
+      </div>
+    </div>
+
+    <!-- 문과·이과 테스트 -->
+    <div class="screen" id="quizScreen">
+      <div class="qz-top"><span id="qzNum">1 / 10</span><div class="qz-bar"><i id="qzFill"></i></div></div>
+      <h2 class="qz-q" id="qzQ">질문</h2>
+      <div id="qzOpts" class="qz-opts"></div>
+      <button class="secondary-button" id="qzPrev" onclick="quizPrev()">← 이전 문항</button>
+    </div>
+    <div class="screen" id="quizResult"></div>
+
     <!-- 화면 6: 결과 -->
     <div class="screen" id="resultScreen">
       <div class="hero">
@@ -710,6 +769,7 @@ const CONFIG = {
     if (history.state && history.state.id && history.state.id !== 'screen1' && history.state.depth !== 0) history.back();
     else goToScreen(fallbackId, fallbackStep);
   }
+  function toggleMenu() { document.getElementById('menuPanel').classList.toggle('on'); }
   function goHome() {
     goToScreen('screen1', 1);
   }
@@ -895,6 +955,116 @@ const CONFIG = {
         resultsEl.innerHTML = `<div class="empty-text">API가 아직 활성화되지 않았습니다.<br>신청 후 1~2시간 후 다시 시도해주세요.</div>`;
       }
     }, 400);
+  }
+
+  // ============================================================
+  // 문과형? 이과형? 테스트 (10문항 → 계열 점수)
+  // ============================================================
+  const QUIZ = [
+    ["제일 자신 있는 과목은?", [["국어·영어", {인문: 2}], ["사회·역사", {사회: 2}], ["수학·물리", {공학: 2}], ["생명과학·화학", {자연: 1, 의약: 1}]]],
+    ["자유로운 주말, 제일 하고 싶은 건?", [["책이나 웹소설 몰아보기", {인문: 2}], ["시사 유튜브 보고 친구랑 토론", {사회: 2}], ["코딩·조립·만들기", {공학: 2}], ["그림·음악·운동", {예체능: 2}]]],
+    ["어려운 문제가 생기면 나는?", [["원인을 하나씩 따져본다", {공학: 1, 자연: 1}], ["사람들과 얘기해서 푼다", {사회: 2}], ["자료를 찾아 정리해 본다", {인문: 1, 사회: 1}], ["일단 직접 부딪혀 본다", {공학: 1, 예체능: 1}]]],
+    ["수학 문제를 풀 때 기분은?", [["풀릴 때 쾌감이 최고", {공학: 1, 자연: 1}], ["어렵지만 할 만하다", {자연: 1, 의약: 1}], ["공식 외우기가 괴롭다", {인문: 1, 사회: 1}], ["수학보다 다른 게 좋다", {예체능: 2}]]],
+    ["과학 실험 시간, 제일 재밌는 건?", [["결과를 예측하고 맞혀보기", {자연: 2}], ["장비 다루고 조작하기", {공학: 2}], ["몸·건강과 관련된 실험", {의약: 2}], ["실험보다 보고서 쓰기가 편함", {인문: 1, 사회: 1}]]],
+    ["10년 뒤 내가 일하는 곳은?", [["사람 만나 설득하는 현장", {사회: 2}], ["연구실이나 개발실", {공학: 1, 자연: 1}], ["병원·보건 현장", {의약: 2}], ["무대·스튜디오·작업실", {예체능: 2}]]],
+    ["가장 듣고 싶은 칭찬은?", [["말을 참 잘한다", {사회: 1, 인문: 1}], ["정말 꼼꼼하다", {의약: 1, 자연: 1}], ["아이디어가 좋다", {예체능: 1, 공학: 1}], ["글을 잘 쓴다", {인문: 2}]]],
+    ["저절로 클릭하게 되는 뉴스는?", [["경제·정치·사회 이슈", {사회: 2}], ["AI·반도체·신기술", {공학: 2}], ["우주·동물·환경", {자연: 2}], ["건강·의학", {의약: 2}]]],
+    ["팀 과제에서 내 역할은?", [["발표 담당", {사회: 1, 인문: 1}], ["자료 조사·글쓰기", {인문: 2}], ["계산·그래프 정리", {자연: 1, 공학: 1}], ["디자인·PPT 꾸미기", {예체능: 2}]]],
+    ["가장 끌리는 한마디는?", [["사람을 더 이해하고 싶다", {인문: 1, 사회: 1}], ["세상의 원리를 알고 싶다", {자연: 2}], ["뭔가 직접 만들고 싶다", {공학: 2}], ["아픈 사람을 돕고 싶다", {의약: 2}]]]
+  ];
+  const TYPES = {
+    인문: { name: "인문형", side: "문과", desc: "언어와 글, 사람의 생각에 관심이 많아요. 읽고 쓰고 해석하는 힘이 강점이에요.", subj: ["화법과 작문", "언어와 매체", "사회·문화", "제2외국어"] },
+    사회: { name: "사회형", side: "문과", desc: "사람과 사회가 움직이는 방식에 관심이 많아요. 말하고 설득하고 조직하는 힘이 강점이에요.", subj: ["확률과 통계", "경제", "정치와 법", "사회·문화"] },
+    공학: { name: "공학형", side: "이과", desc: "원리를 이용해 무언가를 만들고 고치는 걸 좋아해요. 논리와 문제 해결력이 강점이에요.", subj: ["미적분", "기하", "물리학", "정보"] },
+    자연: { name: "자연형", side: "이과", desc: "왜 그런지 끝까지 궁금해하는 탐구형이에요. 관찰하고 실험하는 힘이 강점이에요.", subj: ["미적분", "화학", "생명과학", "지구과학"] },
+    의약: { name: "의약형", side: "이과", desc: "사람의 몸과 건강에 관심이 많고 꼼꼼해요. 돌봄과 정확성이 강점이에요.", subj: ["미적분", "화학", "생명과학", "확률과 통계"] },
+    예체능: { name: "예체능형", side: "예체능", desc: "보고 듣고 움직이며 표현하는 걸 좋아해요. 감각과 창의력이 강점이에요.", subj: ["미술·음악·체육 심화", "언어와 매체", "사회·문화"] }
+  };
+  // 유형별 취업 방향 (대표 예시)
+  const JOBS = {
+    인문: [["콘텐츠·출판·방송", "기자, 작가, 에디터, PD"], ["교육", "국어·영어 교사, 강사, 교육 기획"], ["공공·행정", "공무원, 공공기관 사무직"], ["해외·통번역", "해외영업, 무역, 통번역가"]],
+    사회: [["영업·마케팅", "기업 영업, 마케터, 광고 기획"], ["금융·경영", "은행원, 회계사, 경영 지원"], ["공공·행정", "공무원, 공기업, 법률 사무"], ["사람 관리", "인사(HR), 상담사, 사회복지사"]],
+    공학: [["제조·반도체", "반도체·자동차·기계 엔지니어"], ["IT·소프트웨어", "개발자, 데이터·AI 엔지니어"], ["건설·에너지", "토목·건축·전기 기술자"], ["기술 영업·품질", "기술 영업, 품질·생산 관리"]],
+    자연: [["연구·개발", "연구원, 실험·분석 전문가"], ["바이오·식품", "바이오·식품·화장품 개발"], ["환경·농림", "환경 컨설턴트, 농업·해양 기술"], ["데이터·통계", "데이터 분석가, 통계 전문가"]],
+    의약: [["병원 현장", "의사, 간호사, 치료사"], ["약·바이오", "약사, 제약회사 연구·영업"], ["보건·공공", "보건직 공무원, 방사선사, 임상병리사"], ["의료 산업", "의료기기, 헬스케어 기업"]],
+    예체능: [["디자인·영상", "디자이너, 영상 편집자, 크리에이터"], ["공연·음악", "연주자, 공연 기획, 음향"], ["체육·스포츠", "코치, 트레이너, 스포츠 마케팅"], ["교육", "예체능 교사, 강사"]]
+  };
+  let qzIdx = 0, qzAns = [];
+  function startQuiz() { qzIdx = 0; qzAns = []; goToScreen('quizScreen', 1); renderQuiz(); }
+  function renderQuiz() {
+    const [q, opts] = QUIZ[qzIdx];
+    document.getElementById('qzNum').textContent = `${qzIdx + 1} / ${QUIZ.length}`;
+    document.getElementById('qzFill').style.width = `${(qzIdx / QUIZ.length) * 100}%`;
+    document.getElementById('qzQ').textContent = q;
+    document.getElementById('qzOpts').innerHTML = opts.map((o, i) => `<button class="${qzAns[qzIdx] === i ? 'on' : ''}" onclick="quizPick(${i})">${o[0]}</button>`).join('');
+    document.getElementById('qzPrev').style.display = qzIdx ? '' : 'none';
+    document.getElementById('stepChip').textContent = `Q${qzIdx + 1}`;
+  }
+  function quizPick(i) {
+    qzAns[qzIdx] = i;
+    document.querySelectorAll('#qzOpts button').forEach((b, k) => b.classList.toggle('on', k === i));
+    setTimeout(() => { if (qzIdx < QUIZ.length - 1) { qzIdx++; renderQuiz(); } else showQuizResult(); }, 220);
+  }
+  function quizPrev() { if (qzIdx > 0) { qzIdx--; renderQuiz(); } }
+
+  function majorsOfGroup(group, region) {
+    const kws = FIELD_KEYWORDS[group] || [];
+    return STATE.majors.filter(m => (!region || m.지역 === region) && kws.some(k => String(m.학과명).includes(k)) && !/폐지|모집중단|모집정지/.test(m.상태 || ''));
+  }
+  function showQuizResult() {
+    const sc = { 인문: 0, 사회: 0, 공학: 0, 자연: 0, 의약: 0, 예체능: 0 };
+    qzAns.forEach((a, i) => Object.entries(QUIZ[i][1][a][1]).forEach(([k, v]) => sc[k] += v));
+    const rank = Object.entries(sc).sort((a, b) => b[1] - a[1]);
+    const top = rank[0][0], second = rank[1][0], T = TYPES[top];
+    const mun = sc.인문 + sc.사회, ee = sc.공학 + sc.자연 + sc.의약;
+    const munPct = Math.round(mun / Math.max(1, mun + ee) * 100);
+    const max = rank[0][1] || 1;
+    const region = STATE.selectedRegion;
+    // 공공데이터: 전국 입학정원 중 이 계열 비중
+    let tot = 0, grp = 0;
+    Object.values(STATE.quotaByField || {}).forEach(r => { tot += r.총계 || 0; grp += r[top] || 0; });
+    const share = tot ? (grp / tot * 100).toFixed(1) : null;
+    const local = majorsOfGroup(top, region);
+    const uni4 = local.filter(m => m.학위과정 !== '전문학사').length, col2 = local.length - uni4;
+    const picks = local.filter(m => m.학위과정 !== '전문학사' && Number(m.입학정원) > 0).sort((a, b) => Number(b.입학정원) - Number(a.입학정원));
+    const seen = new Set(); const list = [];
+    for (const m of picks) { const k = m.학교명 + m.학과명; if (seen.has(k)) continue; seen.add(k); list.push(m); if (list.length >= 8) break; }
+    const kwChips = (FIELD_KEYWORDS[top] || []).slice(0, 8).map(k => `<span>${k}</span>`).join('');
+    window._qzList = list;
+    document.getElementById('quizResult').innerHTML = `
+      <div class="qr-hero"><small>나의 계열 유형</small>
+        <h2>나는 <em>${T.name}</em>${T.side !== '예체능' ? ` · ${T.side}` : ''}</h2>
+        <p>${T.desc}<br>두 번째로 잘 맞는 유형은 <b>${TYPES[second].name}</b>이에요.</p>
+        <div class="qr-split"><div class="l"><span>문과 성향 ${munPct}%</span><span>이과 성향 ${100 - munPct}%</span></div><div class="b"><i style="width:${munPct}%"></i></div></div>
+      </div>
+      <div class="qr-sec"><h3>계열별 점수</h3>${rank.map(([k, v]) => `<div class="qr-rank"><span>${TYPES[k].name}</span><div class="t"><i style="width:${v / max * 100}%"></i></div><b>${v}점</b></div>`).join('')}</div>
+      <div class="qr-sec"><h3>앞으로 취업은 어느 방향으로?</h3>
+        ${JOBS[top].map(([a, b]) => `<div class="qr-major" style="cursor:default"><div><div class="n">${a}</div><div class="m">${b}</div></div></div>`).join('')}
+        <p class="helper-text" style="margin-top:6px">두 번째 유형(${TYPES[second].name})과 섞으면: ${JOBS[second].slice(0, 2).map(x => x[0]).join(', ')}</p></div>
+      <div class="qr-sec"><h3>추천 선택과목</h3><div class="qr-chips">${T.subj.map(x => `<span>${x}</span>`).join('')}</div>
+        <p class="helper-text" style="margin-top:10px">지금 고교 교육과정은 문·이과 구분이 없어요. 대신 선택과목이 진로를 좌우해요.</p></div>
+      <div class="qr-sec"><h3>${T.name} 학과, 공공데이터로 보면</h3>
+        <div class="qr-stat">
+          <div><span>전국 대학 입학정원 중</span><b>${share ? share + '%' : '-'}</b></div>
+          <div><span>${region} 지역 ${T.name} 학과</span><b>${local.length}개</b></div>
+          <div><span>그중 4년제</span><b>${uni4}개</b></div>
+          <div><span>그중 전문대</span><b>${col2}개</b></div>
+        </div>
+        <div class="qr-chips" style="margin-top:12px">${kwChips}</div></div>
+      <div class="qr-sec"><h3>${region}에서 갈 수 있는 ${T.name} 학과</h3>
+        ${list.length ? list.map((m, i) => `<div class="qr-major" onclick="quizToPredict(${i})"><div><div class="n">${m.학교명} ${m.학과명}</div><div class="m">${m.수업연한 || ''} · 모집정원 ${m.입학정원}명</div></div><div class="go">합격 예측 ›</div></div>`).join('') : '<p class="helper-text">이 지역에 해당 학과 정보가 없어요. 위쪽에서 지역을 바꿔보세요.</p>'}
+      </div>
+      <p class="helper-text" style="text-align:center;margin-top:12px">재미로 보는 성향 테스트예요. 학과 정보: 공공데이터포털 전국 대학·학과·입학정원 표준데이터</p>
+      <button class="primary-button" onclick="startQuiz()">테스트 다시 하기</button>
+      <button class="secondary-button" onclick="goHome()">처음으로</button>`;
+    goToScreen('quizResult', 2);
+    document.getElementById('stepChip').textContent = '결과';
+  }
+  function quizToPredict(i) {
+    const m = window._qzList[i]; if (!m) return;
+    const u = STATE.universities.find(x => x.학교명 === m.학교명 && x.지역 === m.지역) || STATE.universities.find(x => x.학교명 === m.학교명) || { 학교명: m.학교명, 지역: m.지역, 학교구분: m.학교구분 };
+    STATE.selectedUniversity = u;
+    selectMajor(m);
   }
 
   // ============================================================
