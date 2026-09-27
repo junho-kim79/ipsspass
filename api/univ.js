@@ -6,7 +6,7 @@ module.exports = async (req, res) => {
   }
 
   try {
-    const url = `https://api.data.go.kr/openapi/tn_pubr_public_univ_major_api?serviceKey=78f08217ff48ce1eee4558a87d21b5e76b6f51e8cab11637dd553e95bcb35bef&pageNo=1&numOfRows=20&type=json&univNm=${encodeURIComponent(query)}`;
+    const url = `https://api.data.go.kr/openapi/tn_pubr_public_univ_major_api?serviceKey=${process.env.DATA_GO_KR_KEY || "78f08217ff48ce1eee4558a87d21b5e76b6f51e8cab11637dd553e95bcb35bef"}&pageNo=1&numOfRows=20&type=json&univNm=${encodeURIComponent(query)}`;
 
     const response = await fetch(url);
     const text = await response.text();

@@ -331,6 +331,69 @@
       0% { transform: translateX(-100%); }
       100% { transform: translateX(250%); }
     }
+
+    /* ==================== v2 디자인 ==================== */
+    :root{--blue:#2F5BFF;--blue2:#1C3FD1;--ink:#0E1A3A;--text:#0E1A3A;--sub:#5B6784;--sub2:#98A2B8;--mint:#10B9A0;--mint2:#E3F7F3;--coral:#FF6A55;--bgv:#F4F7FD;--linev:#E6EAF3}
+    body{font-family:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,'Noto Sans KR','Segoe UI',sans-serif;background:#E7ECF6;word-break:keep-all;-webkit-font-smoothing:antialiased}
+    .phone-shell{background:transparent;border:none;box-shadow:none;padding:0;backdrop-filter:none}
+    .view-container{background:var(--bgv);border:1px solid var(--linev);border-radius:30px;box-shadow:0 24px 60px rgba(14,26,58,.10);padding:20px 18px 54px}
+    .brand{font-size:1.25rem;font-weight:900;color:var(--ink)}.brand span{color:var(--blue)}
+    .brand:after{content:'';display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--mint);margin-left:2px;vertical-align:top;margin-top:3px}
+    .step-chip{background:#fff;border:1px solid var(--linev);color:var(--sub)}
+    .region-chip{background:#fff;border:1px solid var(--linev);color:var(--ink)}
+    h1{color:var(--ink);font-weight:900}
+    .choice-card{background:#fff;border:1px solid var(--linev);box-shadow:0 6px 18px rgba(14,26,58,.05)}
+    .choice-card:hover{box-shadow:0 12px 28px rgba(47,91,255,.14)}
+    .icon-badge{background:#E6EDFF;color:var(--blue)}
+    .icon-badge svg{width:26px;height:26px}
+    .icon-badge.mint{background:var(--mint2);color:#0B8A77}
+    .beta-badge{background:var(--mint2);color:#0B8A77;border:none}
+    .primary-button{background:var(--blue);box-shadow:0 12px 24px rgba(47,91,255,.25);border-radius:18px}
+    .secondary-button{border-color:var(--linev);background:#fff;color:var(--ink);border-radius:18px}
+    .input-box,.select-box{border-color:var(--linev);border-radius:16px}
+    .input-box:focus,.select-box:focus{border-color:rgba(47,91,255,.5);box-shadow:0 0 0 4px rgba(47,91,255,.12)}
+    .summary-card,.result-card{background:#fff;border:1px solid var(--linev);box-shadow:0 6px 18px rgba(14,26,58,.04);border-radius:20px}
+    .mini-chip{background:var(--bgv);color:var(--sub)}
+    .dev-credit{display:none}
+    .hero2{margin:6px 0 4px;border-radius:24px;padding:22px 20px;background:linear-gradient(150deg,#2F5BFF 0%,#5B7CFF 55%,#7FA0FF 100%);color:#fff;position:relative;overflow:hidden;text-align:left}
+    .hero2:before{content:'';position:absolute;right:-50px;bottom:-60px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.12)}
+    .hero2:after{content:'';position:absolute;right:40px;top:-40px;width:110px;height:110px;border-radius:50%;background:rgba(16,185,160,.35);filter:blur(10px)}
+    .hero2 small{font-size:.72rem;font-weight:800;letter-spacing:.05em;opacity:.85;position:relative}
+    .hero2 h1{color:#fff;font-size:1.55rem;line-height:1.35;margin:8px 0 0;position:relative}
+    .hero2 p{font-size:.84rem;opacity:.9;margin:8px 0 0;line-height:1.55;position:relative}
+    .stats{display:flex;gap:8px;margin-top:14px;position:relative}
+    .stats div{flex:1;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.22);border-radius:14px;padding:9px 10px}
+    .stats b{display:block;font-size:1rem;font-weight:900}.stats span{font-size:.68rem;opacity:.88}
+    .q2{font-size:1.05rem;font-weight:900;margin:20px 2px 0;color:var(--ink)}
+    .src{margin-top:4px;background:#fff;border:1px dashed #C9D3EA;border-radius:18px;padding:14px 16px}
+    .src h4{margin:0;font-size:.78rem;font-weight:900;color:var(--blue)}
+    .src ul{list-style:none;margin:8px 0 0;padding:0;font-size:.78rem;color:var(--sub);line-height:1.8}
+    .src li:before{content:'✓ ';color:var(--mint);font-weight:900}
+    .maker{text-align:center;font-size:.72rem;color:var(--sub2);margin-top:16px;line-height:1.7}.maker b{color:var(--ink)}
+    /* 결과 게이지 */
+    .res-top{display:flex;align-items:flex-end;justify-content:space-between;margin-top:12px}
+    .res-big{font-size:2.8rem;font-weight:900;letter-spacing:-.03em;line-height:1;color:var(--mint)}
+    .res-big small{font-size:1.1rem}
+    .gauge{margin:36px 2px 4px;position:relative}
+    .gbar{display:flex;height:12px;border-radius:12px;overflow:hidden}
+    .gbar i{flex:1}.gbar i:nth-child(1){background:#FFD6CF}.gbar i:nth-child(2){background:#FFE6B8}.gbar i:nth-child(3){background:#C9D7FF}.gbar i:nth-child(4){background:#BFEFE6}
+    .glab{display:flex;margin-top:12px;font-size:.68rem;font-weight:800;color:var(--sub)}.glab span{flex:1;text-align:center}
+    .gme{position:absolute;top:-30px;transform:translateX(-50%);text-align:center;transition:left .6s ease}
+    .gme b{display:block;font-size:.66rem;font-weight:900;color:#fff;background:var(--ink);border-radius:8px;padding:3px 7px}
+    .gme i{display:block;width:2px;height:20px;background:var(--ink);margin:0 auto}
+    .gme:after{content:'';position:absolute;left:50%;bottom:-10px;transform:translateX(-50%);width:10px;height:10px;border-radius:50%;background:#fff;border:3px solid var(--ink)}
+    /* 고교 정보 카드 */
+    .hs-card{margin-top:12px;background:#fff;border:1px solid var(--linev);border-radius:20px;padding:16px}
+    .hs-card h3{margin:0;font-size:1.02rem;font-weight:900}
+    .hs-card .meta{font-size:.74rem;color:var(--sub);margin-top:3px}
+    .hs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+    .hs-grid div{background:var(--bgv);border-radius:14px;padding:10px 6px;text-align:center}
+    .hs-grid span{font-size:.66rem;color:var(--sub);font-weight:700}.hs-grid b{display:block;font-size:1.05rem;font-weight:900;margin-top:2px}
+    .hs-tip{margin-top:10px;background:linear-gradient(135deg,#EEF2FF,#E7F8F4);border-radius:16px;padding:12px 14px;font-size:.84rem;line-height:1.6}
+    .hs-tip b{color:var(--blue2)}
+    .seg{display:flex;background:#fff;border:1px solid var(--linev);border-radius:14px;padding:4px;gap:4px;margin-bottom:8px}
+    .seg button{flex:1;border:none;background:none;padding:9px 6px;border-radius:10px;font-weight:800;font-size:.8rem;color:var(--sub);cursor:pointer}
+    .seg button.on{background:var(--blue);color:#fff}
   </style>
 </head>
 <body>
@@ -367,32 +430,33 @@
 
     <!-- 화면 1: 메인 -->
     <div class="screen active" id="screen1">
-      <div class="hero">
-        <h1>어떤 입시를<br>준비하시나요?</h1>
-        <p class="subtext">딱 맞는 예측 흐름으로<br>바로 안내해드릴게요.</p>
+      <div class="hero2"><small>공공데이터 기반 진학 예측</small>
+        <h1>내 성적으로<br>어디까지 갈 수 있을까?</h1>
+        <p>교육부·대학 공시 데이터로 진학 가능성을<br>안정·적정·상향·도전으로 알려드려요.</p>
+        <div class="stats"><div><b id="statUniv">390+</b><span>대학</span></div><div><b id="statMajor">13,000+</b><span>학과</span></div><div><b>무료</b><span>가입 없이</span></div></div>
       </div>
-      <div class="card-list">
+      <div class="q2">어떤 입시를 준비하시나요?</div>
+      <div class="card-list" style="margin-top:12px">
         <button class="choice-card" onclick="goToScreen('screen2', 2)">
           <div class="choice-top">
-            <div><h3>고입 패스 <span class="beta-badge">BETA</span></h3><p>중학생 전용 · 특목고 · 자사고 · 일반고</p></div>
-            <div class="icon-badge">🎓</div>
+            <div class="icon-badge mint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V9l7-5 7 5v12M9 21v-6h6v6"/></svg></div>
+            <div style="flex:1"><h3>고입 패스 <span class="beta-badge">BETA</span></h3><p>중학생 · 특목고 · 자사고 · 일반고</p></div>
+            <div style="color:var(--sub2);font-size:1.3rem;font-weight:700">›</div>
           </div>
-          <p class="helper-text" style="margin-top:8px; text-align:left;">
-            ℹ️ 평준화 지역은 학군 기준 배정, 비평준화 지역은 성적순 배정이에요.
-          </p>
         </button>
         <button class="choice-card" onclick="goToScreen('screen3', 2)">
           <div class="choice-top">
-            <div><h3>대입 패스</h3><p>고등학생 전용 · 수시 · 정시 합격예측</p></div>
-            <div class="icon-badge">📚</div>
+            <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 2 9 2 12 0v-5"/></svg></div>
+            <div style="flex:1"><h3>대입 패스</h3><p>고등학생 · 수시 · 정시 합격 예측</p></div>
+            <div style="color:var(--sub2);font-size:1.3rem;font-weight:700">›</div>
           </div>
         </button>
       </div>
-      <p class="footer-note">공공데이터 출처: 공공데이터포털(data.go.kr), 교육부 나이스(NEIS)<br>
-
-        복잡한 입력 없이, 필요한 정보만으로 결과를 안내합니다.
-</p>
-      <div class="update-info">캐시 우선</div>
+      <div class="src"><h4>이런 공공데이터로 알려드려요</h4><ul>
+        <li>교육부 나이스(NEIS) 학교 기본정보</li>
+        <li>학교알리미 학년별·학급별 학생 수 공시</li>
+        <li>공공데이터포털 전국 대학·학과·입학정원 표준데이터</li></ul></div>
+      <div class="maker">제8회 교육 공공데이터 AI활용대회 출품작<br>만든 사람 · <b>김동원</b> (대진고등학교 2학년)</div>
     </div>
 
     <!-- 화면 2: 고입 -->
@@ -417,7 +481,8 @@
         <p class="helper-text">나이스 학교알리미 데이터 기반</p>
       </div>
 
-      <div class="field-wrap" id="highCutlineWrap" style="display:none;">
+      <div id="hsInfo"></div>
+      <div class="field-wrap" id="highCutlineWrap" style="display:none;margin-top:14px">
         <label class="input-label">중학교 내신 석차백분율 (%)</label>
         <input id="highPercentileInput" class="input-box" type="number"
           min="1" max="100" step="0.1" placeholder="예: 20"
@@ -501,6 +566,7 @@
       </div>
       <div class="field-wrap" id="gradeFieldWrap">
         <label class="input-label" id="gradeFieldLabel">내신 등급</label>
+        <div class="seg" id="scaleSeg"><button class="on" data-s="5" onclick="setScale(5)">5등급제 (2025 고1부터)</button><button data-s="9" onclick="setScale(9)">9등급제 (현 고3)</button></div>
         <input id="gradeInput" class="input-box" type="number"
           min="1" max="9" step="0.1" placeholder="예: 2.3"/>
         <p class="helper-text" id="gradeFieldHelper">1.0(최상위) ~ 9.0(최하위) 사이로 입력하세요.</p>
@@ -515,19 +581,17 @@
         <h1>예측 결과</h1>
         <p class="subtext">절대적인 합격컷이 아닌 참고용 예측입니다.</p>
       </div>
-      <div class="result-card" style="text-align:center;">
-        <div class="score-circle" id="resultScore">78%</div>
-        <h3 id="resultMainTitle">적정 지원</h3>
-        <div id="resultBadge" class="predict-badge predict-fit">적정</div>
-        <p id="resultSubText" style="margin-top:10px;">공공데이터 기반 · 내신 2.3등급 기준 참고용 예측</p>
+      <div class="result-card">
+        <div style="font-size:.78rem;color:var(--sub);font-weight:700" id="resultSelectionMeta">지역 · 모집정원 · 전형</div>
+        <h3 id="resultSelectionTitle" style="font-size:1.25rem;margin-top:3px">선택 대학 학과</h3>
+        <div class="res-top"><div class="res-big" id="resultScore">78%</div><div><div id="resultBadge" class="predict-badge predict-fit" style="margin:0">적정</div></div></div>
+        <div class="gauge"><div class="gme" id="gaugeMe" style="left:50%"><b>나</b><i></i></div><div class="gbar"><i></i><i></i><i></i><i></i></div><div class="glab"><span>도전</span><span>상향</span><span>적정</span><span>안정</span></div></div>
+        <h3 id="resultMainTitle" style="display:none">적정 지원</h3>
+        <p id="resultSubText" style="margin-top:12px;font-size:.8rem">공공데이터 기반 참고용 예측</p>
       </div>
       <div class="result-card" style="margin-top:12px;">
         <h3>세부 점수 구성</h3>
         <div id="scoreBreakdown"></div>
-      </div>
-      <div class="result-card" style="margin-top:12px;">
-        <h3 id="resultSelectionTitle">선택 대학 학과</h3>
-        <p id="resultSelectionMeta">지역 · 모집정원 · 전형</p>
       </div>
       <div class="result-card" style="margin-top:12px;">
         <h3>왜 이렇게 나왔나요?</h3>
@@ -557,7 +621,8 @@ const CONFIG = {
     selectedRegion: "대구",
     selectedSchool: "",
     selectedUniversity: null,
-    selectedMajor: null
+    selectedMajor: null,
+    scale: 5
   };
 
   // 학과명 → 계열 추정용 키워드 (전국대학별입학정원원정보표준데이터.csv의 계열 구분에 맞춤)
@@ -704,11 +769,12 @@ const CONFIG = {
     const [universities, majors, quotaByField] = await Promise.all([
       loadJSON(`${CONFIG.DATA_BASE}universities_app.json`),
       loadJSON(`${CONFIG.DATA_BASE}majors_active_undergrad_app.json`),
-      loadQuotaByFieldCSV(`${CONFIG.DATA_BASE}전국대학별입학정원원정보표준데이터.csv`)
+      loadJSON(`${CONFIG.DATA_BASE}quota_by_field.json`, {})
     ]);
     STATE.universities = Array.isArray(universities) ? universities : [];
     STATE.majors = Array.isArray(majors) ? majors : [];
     STATE.quotaByField = quotaByField || {};
+    try { document.getElementById('statUniv').textContent = new Set(STATE.universities.map(u => u.학교명)).size.toLocaleString(); document.getElementById('statMajor').textContent = STATE.majors.length.toLocaleString(); } catch (e) {}
     console.log(`✅ 대학 ${STATE.universities.length}개 / 학과 ${STATE.majors.length}개 / 계열정원 ${Object.keys(STATE.quotaByField).length}개교 로드`);
   }
 
@@ -767,6 +833,7 @@ const CONFIG = {
             document.getElementById("highCutlineWrap").style.display = "block";
             document.getElementById("highCutlineResult").innerHTML = "";
             document.getElementById("highPercentileInput").value = "";
+            loadHighInfo(item);
           };
           return div;
         });
@@ -776,6 +843,34 @@ const CONFIG = {
         resultsEl.innerHTML = `<div class="empty-text">API가 아직 활성화되지 않았습니다.<br>신청 후 1~2시간 후 다시 시도해주세요.</div>`;
       }
     }, 400);
+  }
+
+  // ============================================================
+  // 고입 - 학교알리미 학생 수로 "내신 등급별 인원" 계산
+  // 2025학년도 고1부터 내신 5등급제: 1등급 상위 10%, 2등급 34%, 3등급 66%, 4등급 90%
+  // ============================================================
+  async function loadHighInfo(item) {
+    const box = document.getElementById("hsInfo");
+    box.innerHTML = `<div class="hs-card"><div class="inline-loading"><span class="spinner"></span>학교알리미에서 학생 수 불러오는 중…</div></div>`;
+    try {
+      const qs = new URLSearchParams({ name: item.SCHUL_NM, addr: item.ORG_RDNMA || "" });
+      const d = await (await fetch(`${CONFIG.API_BASE}/hsinfo?${qs}`)).json();
+      if (d.error || !d.grades) throw new Error(d.error || "no data");
+      const g1 = d.grades[0] || Math.round(d.total / 3);
+      const cut = (p) => Math.floor(g1 * p);
+      box.innerHTML = `<div class="hs-card">
+        <h3>${d.name}</h3>
+        <div class="meta">${d.area} · ${d.found} ${d.type} · ${d.year}년 학교알리미 공시</div>
+        <div class="hs-grid">
+          <div><span>1학년 학생</span><b>${g1}명</b></div>
+          <div><span>학급당 학생</span><b>${d.perClass[0] || d.perClassAvg}명</b></div>
+          <div><span>교사 1인당</span><b>${d.perTeacher}명</b></div>
+        </div>
+        <div class="hs-tip">🎯 입학하면 한 학년 <b>${g1}명</b> 중<br>내신 <b>1등급은 약 ${cut(0.10)}명</b>, 2등급까지 약 ${cut(0.34)}명이에요.<br><span style="font-size:.74rem;color:var(--sub)">5등급제 기준(1등급 상위 10%, 2등급 34%) · 과목별로 달라요</span></div>
+      </div>`;
+    } catch (e) {
+      box.innerHTML = `<div class="hs-card"><h3>${item.SCHUL_NM}</h3><div class="meta">학교알리미 학생 수 정보를 불러오지 못했어요.</div></div>`;
+    }
   }
 
   // ============================================================
@@ -886,15 +981,15 @@ const CONFIG = {
         "경남": "경상남도", "제주": "제주"
       };
 
-      const regionKw = regionKeywords[STATE.selectedRegion] || STATE.selectedRegion;
+      const regionKw = STATE.selectedRegion;
 
       let filtered = STATE.universities.filter(item =>
         includesSmart(item.학교명, query)
       );
 
       // 지역 필터 (선택한 지역이 있으면 우선 정렬)
-      const inRegion = filtered.filter(item => String(item.시도명 || "").includes(regionKw));
-      const outRegion = filtered.filter(item => !String(item.시도명 || "").includes(regionKw));
+      const inRegion = filtered.filter(item => String((item.시도명 || item.지역) || "").includes(regionKw));
+      const outRegion = filtered.filter(item => !String((item.시도명 || item.지역) || "").includes(regionKw));
       filtered = [...inRegion, ...outRegion].slice(0, 30);
 
       setStatus("univStatus", "gray", "캐시 데이터 사용 중");
@@ -906,7 +1001,7 @@ const CONFIG = {
           <div class="choice-top">
             <div>
               <h3>${item.학교명}</h3>
-              <p>${item.시도명 || "지역 미상"} · ${item.학교구분명 || ""} · 학과 ${item.학과수 || 0}개</p>
+              <p>${(item.시도명 || item.지역) || "지역 미상"} · ${(item.학교구분명 || item.학교구분) || ""} · 학과 ${item.학과수 || 0}개</p>
             </div>
             <div class="icon-badge">🏛️</div>
           </div>`;
@@ -923,8 +1018,8 @@ setStatus("univStatus", "gray", "캐시 데이터 사용 중");
     STATE.selectedUniversity = univ;
     document.getElementById("selectedUnivTitle").textContent = univ.학교명;
     document.getElementById("selectedUnivText").textContent = `${univ.학교명}의 학과 목록입니다.`;
-    document.getElementById("selectedUnivRegion").textContent = univ.시도명 || "지역 미상";
-    document.getElementById("selectedUnivType").textContent = univ.학교구분명 || "";
+    document.getElementById("selectedUnivRegion").textContent = (univ.시도명 || univ.지역) || "지역 미상";
+    document.getElementById("selectedUnivType").textContent = (univ.학교구분명 || univ.학교구분) || "";
     document.getElementById("majorInput").value = "";
     goToScreen("screen4", 3);
     searchMajor();
@@ -963,7 +1058,7 @@ setStatus("univStatus", "gray", "캐시 데이터 사용 중");
         <div class="choice-top">
           <div>
             <h3>${item.학과명}${statusBadge}${nightBadge}</h3>
-            <p>${item.수업연한 || ""} · 모집정원 ${Number(item.입학정원수 || 0)}명</p>
+            <p>${item.수업연한 || ""} · ${Number((item.입학정원수 ?? item.입학정원) || 0) ? `모집정원 ${Number(item.입학정원수 ?? item.입학정원)}명` : "모집정원 미공개"}</p>
           </div>
           <div class="icon-badge">📘</div>
         </div>`;
@@ -982,11 +1077,25 @@ setStatus("univStatus", "gray", "캐시 데이터 사용 중");
     STATE.selectedMajor = major;
     document.getElementById("selectedMajorTitle").textContent = major.학과명;
     document.getElementById("selectedMajorMeta").textContent =
-      `${major.학교명} · ${major.시도명 || ""} · 모집정원 ${Number(major.입학정원수 || 0)}명`;
+      `${major.학교명} · ${(major.시도명 || major.지역) || ""} · 모집정원 ${Number((major.입학정원수 ?? major.입학정원) || 0)}명`;
     goToScreen("screen5", 4);
     onTrackChange();
   }
 
+  function setScale(n) {
+    STATE.scale = n;
+    document.querySelectorAll('#scaleSeg button').forEach(b => b.classList.toggle('on', +b.dataset.s === n));
+    onTrackChange();
+  }
+  // 5등급 → 9등급 환산 (누적 비율 기준 선형 보간)
+  //  5등급 경계: 10 / 34 / 66 / 90 / 100%,  9등급 경계: 4 / 11 / 23 / 40 / 60 / 77 / 89 / 96 / 100%
+  function toNineScale(g5) {
+    const c5 = [0, 10, 34, 66, 90, 100], c9 = [0, 4, 11, 23, 40, 60, 77, 89, 96, 100];
+    const k = Math.min(4, Math.max(0, Math.floor(g5 - 1)));
+    const pct = c5[k] + (c5[k + 1] - c5[k]) * Math.min(1, g5 - 1 - k);   // 상위 몇 %
+    for (let i = 0; i < 9; i++) if (pct <= c9[i + 1]) return +(1 + i + (pct - c9[i]) / (c9[i + 1] - c9[i])).toFixed(2);
+    return 9;
+  }
   // 전형 유형에 따라 내신/수능 입력 필드를 전환
   function onTrackChange() {
     const track = document.getElementById("trackSelect").value;
@@ -996,6 +1105,7 @@ setStatus("univStatus", "gray", "캐시 데이터 사용 중");
     if (!label || !input || !helper) return;
 
     input.value = "";
+    document.getElementById("scaleSeg").style.display = track === "정시" ? "none" : "";
     if (track === "정시") {
       label.textContent = "수능 백분위";
       input.setAttribute("min", "1");
@@ -1005,9 +1115,9 @@ setStatus("univStatus", "gray", "캐시 데이터 사용 중");
     } else {
       label.textContent = "내신 등급";
       input.setAttribute("min", "1");
-      input.setAttribute("max", "9");
-      input.setAttribute("placeholder", "예: 2.3");
-      helper.textContent = "1.0(최상위) ~ 9.0(최하위) 사이로 입력하세요.";
+      input.setAttribute("max", String(STATE.scale));
+      input.setAttribute("placeholder", STATE.scale === 5 ? "예: 1.8" : "예: 2.3");
+      helper.textContent = STATE.scale === 5 ? "1.0(최상위) ~ 5.0 사이로 입력하세요. 2025년 고1부터 5등급제예요." : "1.0(최상위) ~ 9.0(최하위) 사이로 입력하세요.";
     }
   }
 
@@ -1050,11 +1160,13 @@ setStatus("univStatus", "gray", "캐시 데이터 사용 중");
       academicLabel = "수능 백분위";
       academicScore = rawValue;
     } else {
-      if (Number.isNaN(rawValue) || rawValue < 1 || rawValue > 9) {
-        alert("내신 등급을 1.0 ~ 9.0 사이로 입력해주세요."); return;
+      const maxG = STATE.scale === 5 ? 5 : 9;
+      if (Number.isNaN(rawValue) || rawValue < 1 || rawValue > maxG) {
+        alert(`내신 등급을 1.0 ~ ${maxG}.0 사이로 입력해주세요.`); return;
       }
-      academicLabel = "내신 등급";
-      academicScore = Math.max(0, 100 - ((rawValue - 1) * 12));
+      academicLabel = STATE.scale === 5 ? "내신 등급(5등급제)" : "내신 등급";
+      const g9 = STATE.scale === 5 ? toNineScale(rawValue) : rawValue;
+      academicScore = Math.max(0, 100 - ((g9 - 1) * 12));
     }
 
     // 계산 중 버튼에 로딩 표시 (짧은 연산이지만 클릭 피드백을 명확히)
@@ -1064,9 +1176,9 @@ setStatus("univStatus", "gray", "캐시 데이터 사용 중");
     btn.innerHTML = `<span class="spinner" style="border-color:rgba(255,255,255,0.4); border-top-color:#fff; vertical-align:-3px; margin-right:6px;"></span>계산 중...`;
 
     setTimeout(() => {
-      const quota = Number(STATE.selectedMajor.입학정원수 || 0);
+      const quota = Number((STATE.selectedMajor.입학정원수 ?? STATE.selectedMajor.입학정원) || 0);
       const regionKw = STATE.selectedRegion;
-      const regionMatch = String(STATE.selectedUniversity.시도명 || "").includes(regionKw) ? 1 : 0;
+      const regionMatch = String((STATE.selectedUniversity.시도명 || STATE.selectedUniversity.지역) || "").includes(regionKw) ? 1 : 0;
 
       let quotaBonus = 0;
       if (quota >= 100) quotaBonus = 8;
@@ -1102,18 +1214,25 @@ setStatus("univStatus", "gray", "캐시 데이터 사용 중");
         reason="현재 입력 기준으로 다소 높은 목표일 수 있습니다. 대안 학과도 함께 보시길 권장합니다.";
       }
 
-      document.getElementById("resultScore").textContent = `${score}%`;
+      document.getElementById("resultScore").innerHTML = `${score}<small>%</small>`;
+      document.getElementById("resultScore").style.color = { "predict-safe": "#10B9A0", "predict-fit": "#2F5BFF", "predict-up": "#E09100", "predict-challenge": "#FF6A55" }[className];
+      // 게이지: 18~95 점수를 도전(0~25%)·상향·적정·안정 구간에 배치
+      const zones = [[18, 48], [48, 65], [65, 82], [82, 96]];
+      const zi = zones.findIndex(([a, b]) => score >= a && score < b);
+      const [za, zb] = zones[Math.max(0, zi)];
+      const pos = (Math.max(0, zi) + (score - za) / (zb - za)) * 25;
+      document.getElementById("gaugeMe").style.left = Math.min(97, Math.max(3, pos)) + "%";
       document.getElementById("resultMainTitle").textContent = title;
       document.getElementById("resultBadge").textContent = label;
       document.getElementById("resultBadge").className = `predict-badge ${className}`;
       document.getElementById("resultSubText").textContent =
         track === "정시"
           ? `수능 백분위 ${rawValue.toFixed(1)} · ${track} 기준 참고용 예측`
-          : `내신 ${rawValue.toFixed(1)}등급 · ${track} 기준 참고용 예측`;
+          : `내신 ${rawValue.toFixed(1)}등급${STATE.scale === 5 ? "(5등급제)" : ""} · ${track} 기준 참고용 예측`;
       document.getElementById("resultSelectionTitle").textContent =
         `${STATE.selectedUniversity.학교명} ${STATE.selectedMajor.학과명}`;
       document.getElementById("resultSelectionMeta").textContent =
-        `${STATE.selectedUniversity.시도명 || ""} · 모집정원 ${quota}명 · ${track} 기준`;
+        `${(STATE.selectedUniversity.시도명 || STATE.selectedUniversity.지역) || ""} · ${quota ? `모집정원 ${quota}명` : "모집정원 미공개"} · ${track} 기준`;
       document.getElementById("resultReason").textContent = reason;
 
       const breakdown = [
