@@ -12,7 +12,7 @@ module.exports = async (req, res) => {
     const [a, b] = String(req.query.scan).split("-").map(Number);
     const types = []; for (let i = a; i <= Math.min(b, a + 29); i++) types.push(String(i).padStart(2, "0"));
     const out = await Promise.all(types.map(async (t) => {
-      const q = new URLSearchParams({ apiKey: key, apiType: t, schulKndCode: req.query.schulKndCode || "04", sidoCode: req.query.sidoCode || "27", sggCode: req.query.sggCode || "27260", pbanYr: req.query.pbanYr || "2025" });
+      const q = new URLSearchParams({ apiKey: key, apiType: t, schulKndCode: req.query.schulKndCode || "04", sidoCode: req.query.sidoCode || "27", sggCode: req.query.sggCode || "27260", pbanYr: req.query.pbanYr || "2025", ...(req.query.depthNo ? { depthNo: req.query.depthNo } : {}) });
       try { const d = await (await fetch(`https://www.schoolinfo.go.kr/openApi.do?${q}`)).json(); const it = (d.list || [])[0];
         return [t, it ? Object.fromEntries(Object.entries(it).filter(([k]) => !/CODE|ORG|ADRCD|YN$|_NM$/.test(k)).slice(0, 40)) : (d.resultMsg || "").slice(0, 30)];
       } catch (e) { return [t, "err"]; }
@@ -20,7 +20,7 @@ module.exports = async (req, res) => {
     return res.status(200).json(Object.fromEntries(out));
   }
   const qs = new URLSearchParams({ apiKey: key });
-  for (const k of ["apiType", "schulKndCode", "sidoCode", "sggCode", "pbanYr", "schulCode"]) if (req.query[k]) qs.set(k, String(req.query[k]));
+  for (const k of ["apiType", "schulKndCode", "sidoCode", "sggCode", "pbanYr", "schulCode", "depthNo"]) if (req.query[k]) qs.set(k, String(req.query[k]));
   const ctrl = new AbortController(); const t = setTimeout(() => ctrl.abort(), 9000);
   try {
     const r = await fetch(`https://www.schoolinfo.go.kr/openApi.do?${qs}`, { signal: ctrl.signal });
