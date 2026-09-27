@@ -477,19 +477,6 @@
       </div>
     </div>
 
-    <div style="text-align:center; margin-bottom:18px;">
-      <select id="regionSelect" class="region-chip" onchange="saveRegion()">
-        <option value="서울">서울</option><option value="경기">경기</option>
-        <option value="인천">인천</option><option value="부산">부산</option>
-        <option value="대구" selected>대구</option><option value="광주">광주</option>
-        <option value="대전">대전</option><option value="울산">울산</option>
-        <option value="세종">세종</option><option value="강원">강원</option>
-        <option value="충북">충북</option><option value="충남">충남</option>
-        <option value="전북">전북</option><option value="전남">전남</option>
-        <option value="경북">경북</option><option value="경남">경남</option>
-        <option value="제주">제주</option>
-      </select>
-    </div>
 
     <!-- 화면 1: 메인 -->
     <div class="screen active" id="screen1">
@@ -568,13 +555,22 @@
     <div class="screen" id="screen3">
       <div class="hero">
         <h1>희망 대학을<br>입력해주세요</h1>
-        <p class="subtext">캐시 데이터 기반으로 빠르게 대학 정보를 안내합니다.</p>
+        <p class="subtext">대학 이름이나 초성(ㄱㅂㄷ)으로 찾아보세요.</p>
       </div>
-      <div class="status-row">
-        <div id="univStatus" class="status-badge gray">
-          <span class="dot"></span>
-          <span id="univStatusText">캐시 데이터 사용 중</span>
-        </div>
+      <div id="univStatus" style="display:none"></div>
+      <div class="field-wrap">
+        <label class="input-label">사는 지역 <small style="font-weight:600;color:var(--sub)">· 가까운 대학을 먼저 보여줘요</small></label>
+        <select id="regionSelect" class="select-box" onchange="saveRegion()">
+        <option value="서울">서울</option><option value="경기">경기</option>
+        <option value="인천">인천</option><option value="부산">부산</option>
+        <option value="대구" selected>대구</option><option value="광주">광주</option>
+        <option value="대전">대전</option><option value="울산">울산</option>
+        <option value="세종">세종</option><option value="강원">강원</option>
+        <option value="충북">충북</option><option value="충남">충남</option>
+        <option value="전북">전북</option><option value="전남">전남</option>
+        <option value="경북">경북</option><option value="경남">경남</option>
+        <option value="제주">제주</option>
+      </select>
       </div>
       <div class="field-wrap">
         <label class="input-label">현재 학교</label>
@@ -1011,7 +1007,7 @@ const CONFIG = {
     const kws = FIELD_KEYWORDS[group] || [];
     return STATE.majors.filter(m => (!region || m.지역 === region) && kws.some(k => String(m.학과명).includes(k)) && !/폐지|모집중단|모집정지/.test(m.상태 || ''));
   }
-  function showQuizResult() {
+  function showQuizResult(keep) {
     const sc = { 인문: 0, 사회: 0, 공학: 0, 자연: 0, 의약: 0, 예체능: 0 };
     qzAns.forEach((a, i) => Object.entries(QUIZ[i][1][a][1]).forEach(([k, v]) => sc[k] += v));
     const rank = Object.entries(sc).sort((a, b) => b[1] - a[1]);
@@ -1051,13 +1047,14 @@ const CONFIG = {
           <div><span>그중 전문대</span><b>${col2}개</b></div>
         </div>
         <div class="qr-chips" style="margin-top:12px">${kwChips}</div></div>
-      <div class="qr-sec"><h3>${region}에서 갈 수 있는 ${T.name} 학과</h3>
+      <div class="qr-sec"><h3 style="display:flex;align-items:center;gap:8px">${region}에서 갈 수 있는 ${T.name} 학과
+        <select class="region-chip" style="margin-left:auto;font-size:.74rem;padding:6px 10px" onchange="document.getElementById('regionSelect').value=this.value;saveRegion();showQuizResult(true)">${[...document.getElementById('regionSelect').options].map(o => `<option ${o.value === region ? 'selected' : ''}>${o.value}</option>`).join('')}</select></h3>
         ${list.length ? list.map((m, i) => `<div class="qr-major" onclick="quizToPredict(${i})"><div><div class="n">${m.학교명} ${m.학과명}</div><div class="m">${m.수업연한 || ''} · 모집정원 ${m.입학정원}명</div></div><div class="go">합격 예측 ›</div></div>`).join('') : '<p class="helper-text">이 지역에 해당 학과 정보가 없어요. 위쪽에서 지역을 바꿔보세요.</p>'}
       </div>
       <p class="helper-text" style="text-align:center;margin-top:12px">재미로 보는 성향 테스트예요. 학과 정보: 공공데이터포털 전국 대학·학과·입학정원 표준데이터</p>
       <button class="primary-button" onclick="startQuiz()">테스트 다시 하기</button>
       <button class="secondary-button" onclick="goHome()">처음으로</button>`;
-    goToScreen('quizResult', 2);
+    if (!keep) goToScreen('quizResult', 2);
     document.getElementById('stepChip').textContent = '결과';
   }
   function quizToPredict(i) {
