@@ -418,6 +418,8 @@
     .gbar i:nth-child(1){background:#F3D9CE}.gbar i:nth-child(2){background:#F9D3B5}.gbar i:nth-child(3){background:#F5A36B}.gbar i:nth-child(4){background:#9BB8A5}
     .gme b{background:#12351F}.gme i{background:#12351F}.gme:after{border-color:#12351F}
     .breakdown-bar-fill{background:#E8560A!important}
+    .nav-btn{border:1px solid var(--linev);background:#fff;color:#12351F;border-radius:999px;padding:6px 10px;font-size:.74rem;font-weight:800;cursor:pointer;display:none}
+    .nav-btn.on{display:inline-block}
     .input-box:focus,.select-box:focus{border-color:rgba(232,86,10,.55);box-shadow:0 0 0 4px rgba(232,86,10,.12)}
   </style>
 </head>
@@ -435,8 +437,12 @@
 
     <div class="dev-credit">공공데이터 기반 진학 예측 서비스 · ipsiPASS</div>
     <div class="topbar">
-      <div class="brand" onclick="goToScreen('screen1', 1)" style="cursor:pointer;">ipsi<span>PASS</span></div>
-      <div class="step-chip" id="stepChip">STEP 1</div>
+      <div class="brand" onclick="goHome()" style="cursor:pointer;">ipsi<span>PASS</span></div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <button class="nav-btn" id="navBack" onclick="goBack()" aria-label="뒤로">‹ 뒤로</button>
+        <button class="nav-btn" id="navHome" onclick="goHome()" aria-label="처음으로">⌂ 처음</button>
+        <div class="step-chip" id="stepChip">STEP 1</div>
+      </div>
     </div>
 
     <div style="text-align:center; margin-bottom:18px;">
@@ -516,7 +522,7 @@
         <div id="highCutlineResult" style="margin-top:12px;"></div>
       </div>
 
-      <button class="secondary-button" onclick="goToScreen('screen1', 1)">← 뒤로</button>
+      <button class="secondary-button" onclick="goBack()">← 뒤로</button>
     </div>
 
     <!-- 화면 3: 대입 - 대학 검색 -->
@@ -545,7 +551,7 @@
           oninput="searchUniversity()" autocomplete="off"/>
         <div id="univResults" class="results-wrap"></div>
       </div>
-      <button class="secondary-button" onclick="goToScreen('screen1', 1)">← 뒤로</button>
+      <button class="secondary-button" onclick="goBack()">← 뒤로</button>
     </div>
 
     <!-- 화면 4: 학과 선택 -->
@@ -568,7 +574,7 @@
           oninput="searchMajor()" autocomplete="off"/>
         <div id="majorResults" class="results-wrap"></div>
       </div>
-      <button class="secondary-button" onclick="goToScreen('screen3', 2)">← 대학 다시 선택</button>
+      <button class="secondary-button" onclick="goBack('screen3', 2)">← 대학 다시 선택</button>
     </div>
 
     <!-- 화면 5: 내신 입력 -->
@@ -597,7 +603,7 @@
         <p class="helper-text" id="gradeFieldHelper">1.0(최상위) ~ 9.0(최하위) 사이로 입력하세요.</p>
       </div>
       <button class="primary-button" id="predictBtn" onclick="runPrediction()">예측 결과 보기</button>
-      <button class="secondary-button" onclick="goToScreen('screen4', 3)">← 학과 다시 선택</button>
+      <button class="secondary-button" onclick="goBack('screen4', 3)">← 학과 다시 선택</button>
     </div>
 
     <!-- 화면 6: 결과 -->
@@ -622,8 +628,8 @@
         <h3>왜 이렇게 나왔나요?</h3>
         <p id="resultReason">선택한 대학/학과의 모집정원, 내신 등급, 전형을 바탕으로 예측했습니다.</p>
       </div>
-      <button class="primary-button" onclick="goToScreen('screen1', 1)">처음으로</button>
-      <button class="secondary-button" onclick="goToScreen('screen5', 4)">← 다시 계산</button>
+      <button class="primary-button" onclick="goHome()">처음으로</button>
+      <button class="secondary-button" onclick="goBack('screen5', 4)">← 다시 계산</button>
     </div>
 
   </div>
@@ -685,12 +691,33 @@ const CONFIG = {
   // ============================================================
   // 유틸
   // ============================================================
-  function goToScreen(id, step = 1) {
+  // 화면 전환 + 폰 뒤로가기 지원 (화면마다 방문 기록을 남김)
+  function goToScreen(id, step = 1, fromHistory = false) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     document.getElementById('stepChip').textContent = `STEP ${step}`;
+    const home = id === 'screen1';
+    document.getElementById('navBack').classList.toggle('on', !home);
+    document.getElementById('navHome').classList.toggle('on', !home);
+    if (!fromHistory) {
+      const cur = history.state && history.state.id;
+      if (cur !== id) history.pushState({ id, step }, '', '#' + id);
+    }
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
+  // 이전 화면으로 (기록이 없으면 지정한 화면이나 처음으로)
+  function goBack(fallbackId = 'screen1', fallbackStep = 1) {
+    if (history.state && history.state.id && history.state.id !== 'screen1' && history.state.depth !== 0) history.back();
+    else goToScreen(fallbackId, fallbackStep);
+  }
+  function goHome() {
+    goToScreen('screen1', 1);
+  }
+  window.addEventListener('popstate', (e) => {
+    const st = e.state || { id: 'screen1', step: 1 };
+    goToScreen(st.id, st.step, true);
+  });
+  history.replaceState({ id: 'screen1', step: 1, depth: 0 }, '', location.pathname + location.search);
 
   function saveRegion() {
     STATE.selectedRegion = document.getElementById('regionSelect').value;
