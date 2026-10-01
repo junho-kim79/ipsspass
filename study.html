@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ipsiPASS · 우리집 암기장</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#12351F">
+<style>
+:root{--ink:#12351F;--sub:#6B7268;--paper:#F7F3EC;--card:#FFFDF8;--line:#E6DFD1;--acc:#E8560A;--acc2:#FDE7DA;--ok:#1E7A4C;--ok2:#DDF1E5;--gold:#B8912F}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{background:var(--paper);color:var(--ink);font-family:'Pretendard Variable',Pretendard,-apple-system,'Apple SD Gothic Neo','Noto Sans KR',sans-serif;word-break:keep-all}
+.app{max-width:480px;margin:0 auto;min-height:100vh;padding:14px 16px 28px;display:flex;flex-direction:column}
+header{display:flex;align-items:center;gap:8px}
+.logo{display:flex;align-items:center;gap:8px;font-weight:900;font-size:1.02rem;cursor:pointer}
+.mark{width:34px;height:34px;border-radius:10px;background:var(--ink);color:#fff;display:grid;place-items:center;font-size:1rem;box-shadow:0 3px 0 #0A2214}
+.logo small{display:block;font-size:.66rem;font-weight:700;color:var(--sub);margin-top:1px}
+.sp{flex:1}
+.ibtn{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:7px 10px;font-size:.76rem;font-weight:800;color:var(--ink);cursor:pointer;white-space:nowrap}
+.clock{display:flex;align-items:baseline;justify-content:space-between;margin-top:12px;background:var(--ink);color:#fff;border-radius:16px;padding:10px 14px}
+.clock .d{font-size:.92rem;font-weight:800;opacity:.9}.clock .t{font-size:1.45rem;font-weight:900;font-variant-numeric:tabular-nums;letter-spacing:.02em}
+.who .clock{width:100%;max-width:340px;margin-top:18px}
+.dday{display:flex;gap:6px;overflow-x:auto;margin-top:12px;padding-bottom:2px}
+.dday span{flex-shrink:0;font-size:.78rem;font-weight:900;padding:6px 11px;border-radius:999px;background:var(--acc2);color:var(--acc)}
+.dday span.past{background:#EEE;color:#999}
+.tabs{display:flex;gap:6px;margin-top:10px;background:#ECE5D7;border-radius:16px;padding:5px;overflow-x:auto}
+.tabs button{flex:1 0 auto;border:none;background:none;border-radius:12px;padding:11px 12px;font-weight:900;font-size:.98rem;color:var(--sub);cursor:pointer;white-space:nowrap}
+.tabs button.on{background:var(--ink);color:#fff}
+.stats{display:flex;gap:6px;margin-top:10px}
+.stats div{flex:1;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:8px 10px}
+.stats span{display:block;font-size:.72rem;font-weight:700;color:var(--sub)}.stats b{font-size:1.12rem;font-weight:900}
+.prog{height:6px;background:#ECE5D7;border-radius:6px;margin-top:10px;overflow:hidden}.prog i{display:block;height:100%;background:var(--gold);transition:width .4s}
+.card{margin-top:14px;background:var(--card);border:1px solid var(--line);border-radius:26px;padding:22px 18px 18px;box-shadow:0 10px 26px rgba(18,53,31,.07);position:relative}
+.step{display:flex;gap:6px;align-items:center;font-size:.82rem;font-weight:900;color:var(--sub);padding-right:90px}
+.step i{font-style:normal;padding:4px 9px;border-radius:999px;background:#EFE8DA}.step i.on{background:var(--ink);color:#fff}
+.box{position:absolute;top:18px;right:16px;font-size:.78rem;font-weight:900;color:var(--gold);text-align:right}
+.q{text-align:center;margin:22px 0 8px;min-height:110px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.q .big{font-size:2.4rem;font-weight:900;line-height:1.25}
+.q .big.mid{font-size:1.7rem}.q .big.long{font-size:1.25rem;line-height:1.6;font-weight:800}
+.q .sub{margin-top:8px;font-size:.95rem;font-weight:700;color:var(--sub)}
+.ask{text-align:center;font-size:.98rem;font-weight:900;color:var(--acc);margin-bottom:12px}
+.opts{display:grid;gap:9px}
+.opts button{border:1.5px solid var(--line);background:#fff;border-radius:18px;padding:16px 14px;font-size:1.08rem;font-weight:800;color:var(--ink);cursor:pointer;line-height:1.4;transition:transform .08s}
+.opts button:active{transform:scale(.98)}
+.opts button.ok{background:var(--ok);border-color:var(--ok);color:#fff}
+.opts button.ng{background:var(--acc2);border-color:var(--acc);color:var(--acc)}
+.reveal{margin-top:12px;border-radius:18px;background:#F1ECE1;padding:12px 14px;display:none;text-align:center}
+.reveal.on{display:block;animation:pop .2s ease}
+.reveal .t{font-size:1.15rem;font-weight:900;line-height:1.5}.reveal .t em{font-style:normal;color:var(--acc)}
+.reveal .e{margin-top:6px;font-size:.95rem;color:var(--sub);line-height:1.6;white-space:pre-line}
+@keyframes pop{from{transform:scale(.97);opacity:.4}to{transform:none;opacity:1}}
+.card.okfx{box-shadow:0 0 0 3px rgba(30,122,76,.35),0 10px 26px rgba(18,53,31,.07)}
+.card.ngfx{animation:shake .3s}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.next{display:none;width:100%;margin-top:10px;border:none;border-radius:16px;padding:14px;background:var(--ink);color:#fff;font-weight:900;font-size:1rem;cursor:pointer}
+.next.on{display:block}
+.say{border:1px solid var(--line);background:#fff;color:inherit;border-radius:999px;padding:6px 14px;font-size:.9rem;cursor:pointer;margin-top:8px}
+.empty{text-align:center;padding:26px 6px;color:var(--sub);font-weight:700;line-height:1.8}
+.empty b{color:var(--ink)}
+.foot{margin-top:auto;padding-top:18px;text-align:center;font-size:.7rem;color:#A39C8C;line-height:1.7}
+.foot a{color:inherit}
+/* 사람 고르기 */
+.who{position:fixed;inset:0;z-index:30;background:var(--paper);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
+.who.off{display:none}
+.who h1{font-size:1.5rem;font-weight:900;margin-top:14px}.who p{color:var(--sub);font-weight:700;margin-top:4px;font-size:.92rem}
+.people{display:grid;gap:10px;width:100%;max-width:340px;margin-top:22px}
+.people button{display:flex;align-items:center;gap:12px;border:1px solid var(--line);background:var(--card);border-radius:20px;padding:16px;font-size:1.08rem;font-weight:900;color:var(--ink);cursor:pointer;text-align:left}
+.people button i{font-style:normal;width:42px;height:42px;border-radius:14px;display:grid;place-items:center;font-size:1.3rem;color:#fff}
+.people button small{display:block;font-size:.74rem;color:var(--sub);font-weight:700;margin-top:2px}
+.who .back{margin-top:22px;font-size:.82rem;color:var(--sub);font-weight:800;text-decoration:none}
+/* 잠금 */
+.lock{position:fixed;inset:0;z-index:31;background:var(--paper);display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px}
+.lock.on{display:flex}
+.lock h2{margin-top:14px;font-size:1.35rem;font-weight:900}.lock p{color:var(--sub);font-weight:700;margin-top:4px}
+.dots{display:flex;gap:12px;margin:22px 0}.dots i{width:16px;height:16px;border-radius:50%;border:2px solid var(--ink)}.dots i.f{background:var(--ink)}
+.pad{display:grid;grid-template-columns:repeat(3,76px);gap:12px}
+.pad button{height:64px;border:1px solid var(--line);background:var(--card);border-radius:18px;font-size:1.5rem;font-weight:800;color:var(--ink);cursor:pointer}
+/* 시트 */
+.sheet{position:fixed;inset:0;background:rgba(18,53,31,.4);display:none;align-items:flex-end;justify-content:center;z-index:20}
+.sheet.on{display:flex}
+.sheet>div{width:100%;max-width:480px;max-height:88vh;overflow:auto;background:var(--paper);border-radius:24px 24px 0 0;padding:18px 18px 28px}
+.sheet h3{font-size:1.05rem;font-weight:900;margin-bottom:10px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:12px 2px;border-bottom:1px solid var(--line);font-weight:700;font-size:.9rem}
+.seg{display:flex;gap:4px;background:#ECE5D7;border-radius:12px;padding:3px}.seg button{border:none;background:none;border-radius:9px;padding:6px 12px;font-weight:900;color:var(--sub);cursor:pointer}.seg button.on{background:var(--ink);color:#fff}
+.li{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px 2px;border-bottom:1px dashed var(--line);font-size:.98rem}.li b{font-weight:900}.li span{color:var(--acc);font-weight:700}
+.fld{width:100%;border:1px solid var(--line);border-radius:12px;padding:11px 12px;font-size:1rem;background:#fff;font-family:inherit;margin-top:6px}
+textarea.fld{min-height:170px;line-height:1.6;resize:vertical}
+.lbl{font-size:.8rem;font-weight:900;color:var(--sub);margin-top:12px;display:block}
+.hint{font-size:.78rem;color:var(--sub);line-height:1.6;margin-top:6px}
+.pbtn{width:100%;margin-top:14px;border:none;border-radius:14px;padding:13px;background:var(--ink);color:#fff;font-weight:900;font-size:1rem;cursor:pointer}
+.danger{margin-top:14px;width:100%;border:1px solid var(--acc);background:none;color:var(--acc);border-radius:14px;padding:11px;font-weight:900;cursor:pointer}
+.ex-row{display:flex;gap:6px;align-items:center;margin-top:6px}.ex-row .fld{margin:0}
+.x{border:none;background:none;color:var(--acc);font-weight:900;font-size:1.1rem;cursor:pointer;padding:4px 8px}
+/* 전체 보기 */
+.bookv{position:fixed;inset:0;z-index:15;background:var(--paper);display:none;overflow:auto;padding:0 12px 40px}
+.bookv.on{display:block}
+.bv-top{position:sticky;top:0;z-index:2;background:var(--paper);display:flex;gap:6px;align-items:center;padding:12px 0 8px}
+.bv-top input{flex:1;min-width:0;border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:1rem;background:#fff}
+.bv-h{margin:14px 2px 6px;font-weight:900;color:var(--acc);font-size:.92rem}
+.bv-row{display:grid;grid-template-columns:1fr 1.2fr;gap:10px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:12px;padding:11px 12px;margin-top:5px;cursor:pointer}
+.bv-row .k{font-weight:900;font-size:1.05rem}.bv-row .k i{font-style:normal;color:var(--acc);font-size:.75rem;vertical-align:top}
+.bv-row .m{font-weight:700;font-size:.96rem;color:#2F4A39}
+.bv-row .ex{grid-column:1/-1;font-size:.86rem;color:var(--sub);line-height:1.6;border-top:1px dashed var(--line);padding-top:6px;white-space:pre-line}
+.bv-row .hid{color:transparent;background:#EFE8DA;border-radius:6px}
+.bv-row .del{grid-column:1/-1;justify-self:end;font-size:.74rem;color:var(--acc);font-weight:800}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="logo" onclick="switchWho()"><div class="mark" id="meMark">암</div><div><span id="meName">암기장</span><small>시험범위 무한 반복</small></div></div>
+    <div class="sp"></div>
+    <button class="ibtn" onclick="openBook()">📖 전체</button>
+    <button class="ibtn" onclick="openSheet('review')">📕 오답</button>
+    <button class="ibtn" onclick="openSheet('set')">⚙︎</button>
+  </header>
+  <div class="clock"><span class="d" data-clk="d"></span><span class="t" data-clk="t"></span></div>
+  <div class="dday" id="dday"></div>
+  <div class="tabs" id="tabs"></div>
+  <div class="stats">
+    <div><span>오늘</span><b id="stToday">0</b></div>
+    <div><span>정답률</span><b id="stRate">-</b></div>
+    <div><span>🔥 연속</span><b id="stStreak">0</b></div>
+    <div><span>외운 것</span><b id="stMaster">0</b></div>
+  </div>
+  <div class="prog"><i id="progBar" style="width:0"></i></div>
+  <div class="card" id="card">
+    <div class="step" id="steps"></div>
+    <div class="box" id="boxLv"></div>
+    <div class="q" id="q"></div>
+    <div class="ask" id="ask"></div>
+    <div class="opts" id="opts"></div>
+    <div class="reveal" id="reveal"></div>
+    <button class="next" id="nextBtn" onclick="nextQ()">다음 →</button>
+  </div>
+  <div class="foot">틀린 건 자주, 외운 건 가끔 나와요. 계속 누르다 보면 외워집니다.<br><a href="./">ipsiPASS</a> · 우리집 암기장</div>
+</div>
+
+<!-- 누구? -->
+<div class="who" id="who">
+  <div class="mark" style="width:60px;height:60px;font-size:1.7rem;border-radius:18px">암</div>
+  <h1>우리집 암기장</h1><p>시험기간 암기 · 본인만 들어갈 수 있어요</p>
+  <div class="clock"><span class="d" data-clk="d"></span><span class="t" data-clk="t"></span></div>
+  <div class="people" id="people"></div>
+  <a class="back" href="./">‹ ipsiPASS로 돌아가기</a>
+</div>
+<!-- 비밀번호 -->
+<div class="lock" id="lock">
+  <div class="mark" id="lockMark" style="width:60px;height:60px;font-size:1.6rem;border-radius:18px">암</div>
+  <h2 id="lockName">암기장</h2><p>비밀번호 6자리</p>
+  <div class="dots" id="pinDots"></div>
+  <div class="pad" id="pinPad"></div>
+  <p id="pinMsg" style="color:var(--acc);min-height:1.4em;margin-top:10px"></p>
+  <button class="ibtn" style="margin-top:6px" onclick="closeLock()">‹ 다른 사람</button>
+</div>
+<!-- 전체 보기 -->
+<div class="bookv" id="bookv">
+  <div class="bv-top">
+    <button class="ibtn" onclick="closeBook()">‹ 닫기</button>
+    <input id="bvQ" placeholder="찾기" oninput="renderBook()">
+    <button class="ibtn" id="bvHide" onclick="bvHide=(bvHide+1)%2;renderBook()">가리기</button>
+  </div>
+  <div id="bvList"></div>
+</div>
+<div class="sheet" id="sheet" onclick="if(event.target===this)closeSheet()"><div id="sheetBody"></div></div>
+
+<script>
+/* ───────── 아이들 (비밀번호는 저장하지 않고, 변환한 값만 비교) ─────────
+   각자의 시험범위(사진으로 만든 문제)는 data/study/<id>.enc 에 본인 비밀번호로 잠겨 있어요. */
+const PEOPLE = [
+  { id: 'dongwon', name: '김동원', mark: '동', color: '#12351F', check: '79bbece755c99e844f6cce0ab9e02362c0794d259321e0af1dc60dbaf8d8a925' },
+  { id: 'kyungwon', name: '김경원', mark: '경', color: '#E8560A', check: 'e61fcb1ed7a3c52fdb69928f6bc731583f51ac4350a7b114f836af1f83c33cd6' },
+  { id: 'jiyun', name: '김지윤', mark: '윤', color: '#B8912F', check: 'c288bea5e9f85127402dd7a15edccd169633eb4dd50e31f9ff9d83052f021ad3' }
+];
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const shuffle = a => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const hex = b => [...b].map(x => x.toString(16).padStart(2, '0')).join('');
+const unhex = h => new Uint8Array(h.match(/../g).map(x => parseInt(x, 16)));
+const ls = { get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }, del(k) { try { localStorage.removeItem(k); } catch (e) {} } };
+
+async function deriveBits(p, pin) {
+  const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(pin), 'PBKDF2', false, ['deriveBits']);
+  return new Uint8Array(await crypto.subtle.deriveBits({ name: 'PBKDF2', salt: new TextEncoder().encode('ipsipass-study-' + p.id), iterations: 200000, hash: 'SHA-256' }, base, 256));
+}
+async function checkOf(bits) { return hex(new Uint8Array(await crypto.subtle.digest('SHA-256', bits))); }
+
+/* ───────── 오늘 날짜 · 실시간 시계 ───────── */
+let clkDay = '';
+function tickClock() {
+  const n = new Date(), W = '일월화수목금토';
+  const d = `${n.getFullYear()}년 ${n.getMonth() + 1}월 ${n.getDate()}일 (${W[n.getDay()]})`;
+  const t = [n.getHours(), n.getMinutes(), n.getSeconds()].map(x => String(x).padStart(2, '0')).join(':');
+  document.querySelectorAll('[data-clk="d"]').forEach(e => e.textContent = d);
+  document.querySelectorAll('[data-clk="t"]').forEach(e => e.textContent = t);
+  if (clkDay && clkDay !== d && S) { if (S.day !== todayStr()) { S.day = todayStr(); S.today = 0; save(); updStats(); } renderDday(); }   // 자정 넘으면 D-day·오늘 개수 새로
+  clkDay = d;
+}
+setInterval(tickClock, 1000);
+
+/* ───────── 사람 고르기 · 잠금 ───────── */
+let ME = null, KEYBITS = null;
+$('people').innerHTML = PEOPLE.map((p, i) => `<button onclick="pickWho(${i})"><i style="background:${p.color}">${p.mark}</i><div>${p.name} 암기장<small>${p.check ? '🔒 비밀번호' : '비밀번호 준비 중'}</small></div></button>`).join('');
+function pickWho(i) {
+  const p = PEOPLE[i];
+  const saved = ls.get('ipsi_study_key_' + p.id);   // 이 폰에서 한 번 열었으면 바로
+  if (saved) checkOf(unhex(saved)).then(c => { if (p.check && c === p.check) unlock(p, unhex(saved)); else openLock(p); }).catch(() => openLock(p));
+  else openLock(p);
+}
+let lockP = null, pinVal = '';
+function openLock(p) {
+  lockP = p; pinVal = ''; drawPin();
+  $('lockName').textContent = p.name + ' 암기장'; $('lockMark').textContent = p.mark; $('lockMark').style.background = p.color;
+  $('pinMsg').textContent = p.check ? '' : '아직 비밀번호가 정해지지 않았어요. 아빠한테 말해주세요.';
+  $('lock').classList.add('on');
+}
+function closeLock() { $('lock').classList.remove('on'); lockP = null; }
+function drawPin() { $('pinDots').innerHTML = [0, 1, 2, 3, 4, 5].map(i => `<i class="${i < pinVal.length ? 'f' : ''}"></i>`).join(''); }
+tickClock();
+$('pinPad').innerHTML = [1, 2, 3, 4, 5, 6, 7, 8, 9, '', 0, '⌫'].map(k => k === '' ? '<span></span>' : `<button data-k="${k}">${k}</button>`).join('');
+$('pinPad').querySelectorAll('button').forEach(b => b.onclick = async () => {
+  if (!lockP) return;
+  const k = b.dataset.k;
+  if (k === '⌫') pinVal = pinVal.slice(0, -1); else if (pinVal.length < 6) pinVal += k;
+  drawPin();
+  if (pinVal.length === 6) {
+    const p = lockP;
+    $('pinMsg').textContent = '확인 중…';
+    const bits = await deriveBits(p, pinVal);
+    if (p.check && await checkOf(bits) === p.check) { ls.set('ipsi_study_key_' + p.id, hex(bits)); unlock(p, bits); }
+    else { $('pinMsg').textContent = '비밀번호가 달라요'; pinVal = ''; drawPin(); if (navigator.vibrate) navigator.vibrate(80); }
+  }
+});
+drawPin();
+function switchWho() {   // 로고 누르면 잠그고 사람 고르기로
+  if (ME && !confirm(ME.name + ' 암기장을 잠글까요?')) return;
+  if (ME) ls.del('ipsi_study_key_' + ME.id);
+  ME = null; KEYBITS = null; $('who').classList.remove('off');
+}
+
+/* ───────── 데이터 & 저장 ─────────
+   item: { s: 과목, u: 단원, k: 문제(앞), m: 답(뒤), e: 설명, st: 중요 } */
+let BASE = { items: [], exams: [] }, ITEMS = [], S = null, KEY = '';
+const blank = () => ({ sub: '전체', n: 4, speak: true, tick: 0, prog: {}, wrong: [], recent: [], day: '', today: 0, ok: 0, tot: 0, streak: 0, mine: [], exams: null, hidden: [] });
+const save = () => ls.set(KEY, JSON.stringify(S));
+const todayStr = () => { const d = new Date(); return new Date(d - d.getTimezoneOffset() * 6e4).toISOString().slice(0, 10); };
+const idOf = it => it.s + '|' + it.k + '|' + it.m;
+
+async function loadBase(p, bits) {
+  try {
+    const r = await fetch(`data/study/${p.id}.enc?t=${Date.now()}`);
+    if (!r.ok) return { items: [], exams: [] };
+    const raw = Uint8Array.from(atob((await r.text()).trim()), c => c.charCodeAt(0));
+    const key = await crypto.subtle.importKey('raw', bits, 'AES-GCM', false, ['decrypt']);
+    const plain = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: raw.slice(0, 12) }, key, raw.slice(12));
+    const d = JSON.parse(new TextDecoder().decode(plain));
+    return { items: d.items || [], exams: d.exams || [] };
+  } catch (e) { return { items: [], exams: [] }; }
+}
+async function unlock(p, bits) {
+  ME = p; KEYBITS = bits; KEY = 'ipsi_study_' + p.id;
+  $('lock').classList.remove('on'); $('who').classList.add('off');
+  $('meName').textContent = p.name + ' 암기장'; $('meMark').textContent = p.mark; $('meMark').style.background = p.color;
+  S = blank(); try { const x = JSON.parse(ls.get(KEY) || 'null'); if (x) S = Object.assign(S, x); } catch (e) {}
+  if (S.day !== todayStr()) { S.day = todayStr(); S.today = 0; }
+  $('q').innerHTML = '<div class="sub">불러오는 중…</div>'; $('opts').innerHTML = ''; $('ask').textContent = '';
+  BASE = await loadBase(p, bits);
+  rebuild();
+}
+function rebuild() {
+  const hid = new Set(S.hidden || []), seen = new Set();
+  ITEMS = [...BASE.items, ...(S.mine || []).map(x => ({ ...x, mine: 1 }))].filter(x => x && x.k && x.m).filter(x => { const id = idOf(x); if (seen.has(id) || hid.has(id)) return false; seen.add(id); return true; });
+  ITEMS.forEach(x => x.id = idOf(x));
+  renderTabs(); renderDday(); updStats(); nextQ();
+}
+const subjects = () => [...new Set(ITEMS.map(x => x.s || '기타'))];
+const pool = () => S.sub === '전체' ? ITEMS : ITEMS.filter(x => (x.s || '기타') === S.sub);
+
+function renderTabs() {
+  const subs = subjects();
+  if (S.sub !== '전체' && !subs.includes(S.sub)) S.sub = '전체';
+  $('tabs').innerHTML = ['전체', ...subs].map(s => `<button class="${s === S.sub ? 'on' : ''}" data-s="${esc(s)}">${esc(s)}</button>`).join('');
+  $('tabs').querySelectorAll('button').forEach(b => b.onclick = () => { S.sub = b.dataset.s; save(); renderTabs(); updStats(); nextQ(); });
+}
+function renderDday() {
+  const ex = S.exams || BASE.exams || [];
+  const t0 = new Date(todayStr());
+  $('dday').innerHTML = ex.slice().sort((a, b) => a.d.localeCompare(b.d)).map(x => {
+    const n = Math.round((new Date(x.d) - t0) / 864e5);
+    return `<span class="${n < 0 ? 'past' : ''}">${esc(x.s)} ${n > 0 ? 'D-' + n : n === 0 ? 'D-DAY' : '끝'}</span>`;
+  }).join('');
+}
+
+/* ───────── 반복 스케줄 (라이트너 상자, 福大邱와 같은 방식) ───────── */
+const GAP = [8, 25, 60, 150, 350, 800], WRONG_GAP = 6, ACTIVE = 15;
+function st(id) { return S.prog[id] || (S.prog[id] = { b: 0, due: 0, seen: 0 }); }
+function pick() {
+  const list = pool(), p = S.prog;
+  const recentN = Math.min(8, Math.floor(list.length / 3));
+  const rec = S.recent.slice(0, recentN), ok = x => !rec.includes(x.id);
+  const seen = list.filter(x => p[x.id] && p[x.id].seen);
+  const learning = seen.filter(x => p[x.id].b < 2);
+  const due = seen.filter(x => p[x.id].due <= S.tick && ok(x)).sort((a, b) => p[a.id].due - p[b.id].due);
+  if (due.length && (learning.length >= ACTIVE || Math.random() < .6)) return due[0];
+  const fresh = list.filter(x => !(p[x.id] && p[x.id].seen)).sort((a, b) => (b.st || 0) - (a.st || 0));
+  if (fresh.length && (learning.length < ACTIVE || !due.length)) return fresh[0];   // 중요 먼저, 범위 순서대로
+  if (due.length) return due[0];
+  const all = seen.filter(ok).sort((a, b) => (p[a.id].last || 0) - (p[b.id].last || 0));
+  return all[0] || list[0];
+}
+function grade(id, good) {
+  const s = st(id); s.seen++; s.last = S.tick;
+  S.recent = [id, ...S.recent.filter(x => x !== id)].slice(0, 20);
+  if (good) { s.b = Math.min(5, s.b + 1); s.due = S.tick + GAP[s.b]; S.wrong = S.wrong.filter(x => x !== id); }
+  else { s.b = 0; s.due = S.tick + WRONG_GAP; if (!S.wrong.includes(id)) S.wrong.unshift(id); S.wrong = S.wrong.slice(0, 300); }
+}
+
+/* ───────── 문제 ───────── */
+let cur = null, lock = false, finished = false;
+const isEn = t => /^[\x20-\x7E’‘“”…–—]+$/.test(String(t || '').trim()) && /[a-z]/i.test(t);
+function distract(field, item, n) {
+  const same = shuffle(ITEMS.filter(x => x !== item && x[field] !== item[field] && (x.s || '') === (item.s || '')));
+  const sameU = same.filter(x => x.u && x.u === item.u), others = same.filter(x => !sameU.includes(x));
+  let c = [...sameU, ...others];
+  const lenOk = x => Math.abs(String(x[field]).length - String(item[field]).length) <= Math.max(6, String(item[field]).length * .8);
+  c = [...c.filter(lenOk), ...c.filter(x => !lenOk(x))];
+  const rest = shuffle(ITEMS.filter(x => x !== item && x[field] !== item[field] && !c.includes(x)));
+  const vals = [];
+  for (const x of [...c, ...rest]) { if (vals.length >= n - 1) break; if (!vals.includes(x[field])) vals.push(x[field]); }
+  return shuffle([item[field], ...vals]);
+}
+const bigCls = t => 'big' + (String(t).length > 22 ? ' long' : String(t).length > 8 ? ' mid' : '');
+function newQ() {
+  finished = false; lock = false;
+  $('card').classList.remove('okfx', 'ngfx'); $('reveal').classList.remove('on'); $('nextBtn').classList.remove('on');
+  if (!pool().length) {
+    $('steps').innerHTML = ''; $('boxLv').textContent = ''; $('ask').textContent = ''; $('opts').innerHTML = '';
+    $('q').innerHTML = `<div class="empty">아직 외울 게 없어요.<br><b>시험범위 사진</b>을 아빠한테 보내거나<br>⚙︎ → <b>직접 추가</b>로 넣어 보세요.</div>`;
+    return;
+  }
+  if (ITEMS.length < 2) { $('q').innerHTML = '<div class="empty">문제가 2개 이상 있어야 보기를 만들 수 있어요.</div>'; $('opts').innerHTML = ''; return; }
+  const item = pick();
+  const rev = String(item.m).length <= 40 && String(item.k).length <= 40 && Math.random() < .3;   // 가끔 거꾸로: 답 → 문제
+  cur = { item, type: rev ? 'm2k' : 'k2m', ok: true };
+  const t = cur.type, s = S.prog[item.id];
+  $('steps').innerHTML = `<i class="on">${esc(item.s || '기타')}${item.u ? ' · ' + esc(item.u) : ''}</i>`;
+  $('boxLv').textContent = (item.st ? '⭐중요 · ' : '') + (s && s.seen ? '★'.repeat(s.b) + '☆'.repeat(5 - s.b) : 'NEW');
+  const front = t === 'k2m' ? item.k : item.m, field = t === 'k2m' ? 'm' : 'k';
+  cur.field = field;
+  $('q').innerHTML = `<div class="${bigCls(front)}">${esc(front)}</div>`;
+  $('ask').textContent = t === 'k2m' ? (isEn(item.k) ? '뜻은?' : '답은?') : (isEn(item.k) ? '영어로?' : '무엇일까요?');
+  const opts = distract(field, item, S.n);
+  $('opts').innerHTML = opts.map(o => `<button data-v="${esc(o)}">${esc(o)}</button>`).join('');
+  $('opts').querySelectorAll('button').forEach(b => b.onclick = () => answer(b));
+  if (t === 'k2m' && S.speak && isEn(item.k)) speak(item.k);
+}
+function answer(btn) {
+  if (lock) return; lock = true;
+  const right = String(cur.item[cur.field]), good = btn.dataset.v === right;
+  $('opts').querySelectorAll('button').forEach(b => { if (b.dataset.v === right) b.classList.add('ok'); });
+  if (!good) { btn.classList.add('ng'); $('card').classList.add('ngfx'); if (navigator.vibrate) navigator.vibrate(60); }
+  else $('card').classList.add('okfx');
+  S.tot++; S.today++; if (good) { S.ok++; S.streak++; } else S.streak = 0;
+  if (good && S.speak && isEn(cur.item.k) && cur.type === 'm2k') speak(cur.item.k);
+  showReveal(); finishQ(good); $('nextBtn').classList.add('on'); lock = false;
+}
+function finishQ(good) { if (finished) return; finished = true; S.tick++; grade(cur.item.id, good); save(); updStats(); }
+function showReveal() {
+  const it = cur.item;
+  let h = `<div class="t">${esc(it.k)} → <em>${esc(it.m)}</em></div>${it.e ? `<div class="e">${esc(it.e)}</div>` : ''}`;
+  if (isEn(it.k)) h += `<button class="say" data-t="${esc(it.k)}">🔊 발음</button>`;
+  $('reveal').innerHTML = h; $('reveal').classList.add('on');
+  $('reveal').querySelectorAll('.say').forEach(b => b.onclick = e => { e.stopPropagation(); speak(b.dataset.t); });
+}
+function nextQ() { newQ(); }
+function speak(txt) { try { if (!window.speechSynthesis) return; speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(txt); u.lang = 'en-US'; u.rate = .92; speechSynthesis.speak(u); } catch (e) {} }
+
+function updStats() {
+  $('stToday').textContent = S.today;
+  $('stRate').textContent = S.tot ? Math.round(S.ok / S.tot * 100) + '%' : '-';
+  $('stStreak').textContent = S.streak;
+  const list = pool(), m = list.filter(x => S.prog[x.id] && S.prog[x.id].b >= 3).length;
+  $('stMaster').textContent = `${m}/${list.length}`;
+  $('progBar').style.width = (list.length ? m / list.length * 100 : 0) + '%';
+}
+
+/* ───────── 📖 전체 보기 (가리고 외우기) ───────── */
+let bvHide = 0, bvOpen = new Set();
+function openBook() { if (!ME) return; $('bookv').classList.add('on'); renderBook(); }
+function closeBook() { $('bookv').classList.remove('on'); }
+function renderBook() {
+  $('bvHide').textContent = ['가리기', '답 가림'][bvHide];
+  const q = $('bvQ').value.trim();
+  let list = pool();
+  if (q) list = list.filter(x => [x.k, x.m, x.e, x.u].some(v => v && String(v).includes(q)));
+  let h = '', last = null;
+  list.forEach(x => {
+    const head = (x.s || '기타') + (x.u ? ' · ' + x.u : '');
+    if (head !== last) { h += `<div class="bv-h">${esc(head)}</div>`; last = head; }
+    const i = ITEMS.indexOf(x), show = bvOpen.has(i), hm = bvHide && !show;
+    h += `<div class="bv-row" data-i="${i}"><div class="k">${esc(x.k)}${x.st ? '<i>★</i>' : ''}</div><div class="m ${hm ? 'hid' : ''}">${esc(x.m)}</div>${x.e && !hm ? `<div class="ex">${esc(x.e)}</div>` : ''}${show ? `<div class="del" data-del="${i}">이 문제 빼기</div>` : ''}</div>`;
+  });
+  $('bvList').innerHTML = h || '<p style="padding:20px;color:var(--sub)">없어요</p>';
+  $('bvList').querySelectorAll('.bv-row').forEach(r => r.onclick = e => {
+    const d = e.target.dataset.del;
+    if (d !== undefined) { const x = ITEMS[+d]; if (confirm(`"${x.k}" 를 암기장에서 뺄까요?`)) { if (x.mine) S.mine = S.mine.filter(y => idOf(y) !== x.id); else S.hidden.push(x.id); save(); rebuild(); renderBook(); } return; }
+    const i = +r.dataset.i; bvOpen.has(i) ? bvOpen.delete(i) : bvOpen.add(i); renderBook();
+  });
+}
+
+/* ───────── 설정 · 오답 · 직접 추가 ───────── */
+function openSheet(kind) {
+  if (!ME) return;
+  let h = '';
+  if (kind === 'set') {
+    h = `<h3>⚙︎ ${esc(ME.name)} 설정</h3>
+      <button class="pbtn" onclick="openSheet('add')">＋ 직접 추가</button>
+      <button class="pbtn" style="background:#fff;color:var(--ink);border:1px solid var(--line)" onclick="openSheet('exam')">📅 시험 날짜 (D-day)</button>
+      <div class="row">보기 개수<div class="seg">${[3, 4].map(n => `<button class="${S.n === n ? 'on' : ''}" onclick="S.n=${n};save();openSheet('set');nextQ()">${n}개</button>`).join('')}</div></div>
+      <div class="row">영어 발음 듣기<div class="seg">${[['켜기', true], ['끄기', false]].map(([l, v]) => `<button class="${S.speak === v ? 'on' : ''}" onclick="S.speak=${v};save();openSheet('set')">${l}</button>`).join('')}</div></div>
+      <div class="row">전체 ${ITEMS.length}개 · ${subjects().map(s => `${esc(s)} ${ITEMS.filter(x => (x.s || '기타') === s).length}`).join(' · ') || '없음'}</div>
+      ${S.hidden.length ? `<button class="danger" style="border-color:var(--line);color:var(--sub)" onclick="S.hidden=[];save();rebuild();closeSheet()">뺀 문제 ${S.hidden.length}개 되살리기</button>` : ''}
+      <button class="danger" onclick="if(confirm('${S.sub === '전체' ? '전체' : esc(S.sub)} 학습 기록을 처음부터 다시 할까요?')){pool().forEach(x=>delete S.prog[x.id]);S.wrong=S.wrong.filter(id=>!pool().some(x=>x.id===id));save();closeSheet();updStats();nextQ()}">${S.sub === '전체' ? '전체' : esc(S.sub)} 기록 초기화</button>
+      <button class="danger" style="border-color:var(--line);color:var(--sub)" onclick="closeSheet();switchWho()">🔒 잠그고 나가기</button>`;
+  } else if (kind === 'add') {
+    h = `<h3>＋ 직접 추가</h3>
+      <label class="lbl">과목</label><input class="fld" id="adS" list="subList" value="${S.sub === '전체' ? '' : esc(S.sub)}" placeholder="예: 영어, 한국사, 과학">
+      <datalist id="subList">${subjects().map(s => `<option value="${esc(s)}">`).join('')}</datalist>
+      <label class="lbl">단원 (선택)</label><input class="fld" id="adU" placeholder="예: Lesson 3, 조선 전기">
+      <label class="lbl">문제 - 답 (한 줄에 하나)</label>
+      <textarea class="fld" id="adT" placeholder="abandon - 버리다&#10;임진왜란 - 1592년&#10;광합성 - 빛에너지로 양분을 만드는 과정"></textarea>
+      <p class="hint">한 줄에 <b>문제 - 답</b> 으로 써요. ( - , : , 탭 모두 돼요 )<br>엑셀·메모장에서 복사해서 붙여넣어도 돼요.</p>
+      <button class="pbtn" onclick="addMine()">추가하기</button>`;
+  } else if (kind === 'exam') {
+    const ex = (S.exams || BASE.exams || []).slice();
+    h = `<h3>📅 시험 날짜</h3><div id="exList">${ex.map(x => exRow(x.s, x.d)).join('')}</div>
+      <button class="ibtn" style="margin-top:10px" onclick="$('exList').insertAdjacentHTML('beforeend',exRow('',''))">＋ 과목 추가</button>
+      <button class="pbtn" onclick="saveExams()">저장</button>`;
+  } else {
+    const list = S.wrong.map(id => ITEMS.find(x => x.id === id)).filter(Boolean).filter(x => S.sub === '전체' || (x.s || '기타') === S.sub);
+    h = `<h3>📕 오답 노트 <small style="font-size:.78rem;color:var(--sub)">${list.length}개 · 맞히면 자동으로 빠져요</small></h3>
+      <div>${list.length ? list.map(x => `<div class="li"><b>${esc(x.k)}</b><span>${esc(x.m)}</span></div>`).join('') : '<p style="color:var(--sub);padding:14px 0">아직 틀린 게 없어요 👍</p>'}</div>`;
+  }
+  $('sheetBody').innerHTML = h; $('sheet').classList.add('on');
+}
+function closeSheet() { $('sheet').classList.remove('on'); }
+function exRow(s, d) { return `<div class="ex-row"><input class="fld exS" value="${esc(s)}" placeholder="과목" style="flex:1"><input class="fld exD" type="date" value="${esc(d)}" style="flex:1.2"><button class="x" onclick="this.parentNode.remove()">✕</button></div>`; }
+function saveExams() {
+  S.exams = [...document.querySelectorAll('#exList .ex-row')].map(r => ({ s: r.querySelector('.exS').value.trim(), d: r.querySelector('.exD').value })).filter(x => x.s && x.d);
+  save(); renderDday(); closeSheet();
+}
+function addMine() {
+  const s = $('adS').value.trim() || '기타', u = $('adU').value.trim();
+  const rows = $('adT').value.split('\n').map(l => l.trim()).filter(Boolean).map(l => {
+    const m = l.match(/^(.+?)\s*(?:\t| - | – | — |:|=|-)\s*(.+)$/);
+    return m ? { s, u, k: m[1].trim(), m: m[2].trim() } : null;
+  }).filter(Boolean);
+  if (!rows.length) { alert('"문제 - 답" 형식으로 써 주세요'); return; }
+  S.mine = [...(S.mine || []), ...rows]; S.sub = s; save(); closeSheet(); rebuild();
+  alert(rows.length + '개 추가했어요');
+}
+document.addEventListener('keydown', e => { if (!ME) return; const k = +e.key; if (k >= 1 && k <= 4 && !e.target.closest('input,textarea')) { const b = $('opts').querySelectorAll('button')[k - 1]; if (b) b.click(); } if (e.key === 'Enter' && $('nextBtn').classList.contains('on') && !e.target.closest('input,textarea')) nextQ(); });
+</script>
+</body>
+</html>
