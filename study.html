@@ -47,6 +47,7 @@ header{display:flex;align-items:center;gap:8px}
 .reveal{margin-top:12px;border-radius:18px;background:#F1ECE1;padding:12px 14px;display:none;text-align:center}
 .reveal.on{display:block;animation:pop .2s ease}
 .reveal .t{font-size:1.15rem;font-weight:900;line-height:1.5}.reveal .t em{font-style:normal;color:var(--acc)}
+.reveal .tip,.tipb{margin-top:8px;font-size:.92rem;font-weight:800;line-height:1.55;color:#7A5A12;background:#FBF2D9;border-radius:12px;padding:8px 10px;text-align:left}
 .reveal .e{margin-top:6px;font-size:.95rem;color:var(--sub);line-height:1.6;white-space:pre-line}
 @keyframes pop{from{transform:scale(.97);opacity:.4}to{transform:none;opacity:1}}
 .card.okfx{box-shadow:0 0 0 3px rgba(30,122,76,.35),0 10px 26px rgba(18,53,31,.07)}
@@ -319,6 +320,7 @@ function grade(id, good) {
 let cur = null, lock = false, finished = false;
 const isEn = t => /^[\x20-\x7E’‘“”…–—]+$/.test(String(t || '').trim()) && /[a-z]/i.test(t);
 function distract(field, item, n) {
+  if (item.o && field === 'm') return shuffle([item.m, ...shuffle(item.o.filter(x => x !== item.m)).slice(0, n - 1)]);
   const same = shuffle(ITEMS.filter(x => x !== item && x[field] !== item[field] && (x.s || '') === (item.s || '')));
   const sameU = same.filter(x => x.u && x.u === item.u), others = same.filter(x => !sameU.includes(x));
   let c = [...sameU, ...others];
@@ -340,7 +342,7 @@ function newQ() {
   }
   if (ITEMS.length < 2) { $('q').innerHTML = '<div class="empty">문제가 2개 이상 있어야 보기를 만들 수 있어요.</div>'; $('opts').innerHTML = ''; return; }
   const item = pick();
-  const rev = String(item.m).length <= 40 && String(item.k).length <= 40 && Math.random() < .3;   // 가끔 거꾸로: 답 → 문제
+  const rev = !item.o && String(item.m).length <= 40 && String(item.k).length <= 40 && Math.random() < .3;   // 가끔 거꾸로: 답 → 문제
   cur = { item, type: rev ? 'm2k' : 'k2m', ok: true };
   const t = cur.type, s = S.prog[item.id];
   $('steps').innerHTML = `<i class="on">${esc(item.s || '기타')}${item.u ? ' · ' + esc(item.u) : ''}</i>`;
@@ -367,7 +369,7 @@ function answer(btn) {
 function finishQ(good) { if (finished) return; finished = true; S.tick++; grade(cur.item.id, good); save(); updStats(); }
 function showReveal() {
   const it = cur.item;
-  let h = `<div class="t">${esc(it.k)} → <em>${esc(it.m)}</em></div>${it.e ? `<div class="e">${esc(it.e)}</div>` : ''}`;
+  let h = `<div class="t">${esc(it.k)} → <em>${esc(it.m)}</em></div>${it.e ? `<div class="e">${esc(it.e)}</div>` : ''}${it.t ? `<div class="tip">💡 ${esc(it.t)}</div>` : ''}`;
   if (isEn(it.k)) h += `<button class="say" data-t="${esc(it.k)}">🔊 발음</button>`;
   $('reveal').innerHTML = h; $('reveal').classList.add('on');
   $('reveal').querySelectorAll('.say').forEach(b => b.onclick = e => { e.stopPropagation(); speak(b.dataset.t); });
@@ -398,7 +400,7 @@ function renderBook() {
     const head = (x.s || '기타') + (x.u ? ' · ' + x.u : '');
     if (head !== last) { h += `<div class="bv-h">${esc(head)}</div>`; last = head; }
     const i = ITEMS.indexOf(x), show = bvOpen.has(i), hm = bvHide && !show;
-    h += `<div class="bv-row" data-i="${i}"><div class="k">${esc(x.k)}${x.st ? '<i>★</i>' : ''}</div><div class="m ${hm ? 'hid' : ''}">${esc(x.m)}</div>${x.e && !hm ? `<div class="ex">${esc(x.e)}</div>` : ''}${show ? `<div class="del" data-del="${i}">이 문제 빼기</div>` : ''}</div>`;
+    h += `<div class="bv-row" data-i="${i}"><div class="k">${esc(x.k)}${x.st ? '<i>★</i>' : ''}</div><div class="m ${hm ? 'hid' : ''}">${esc(x.m)}</div>${x.e && !hm ? `<div class="ex">${esc(x.e)}</div>` : ''}${x.t && !hm ? `<div class="ex tipb">💡 ${esc(x.t)}</div>` : ''}${show ? `<div class="del" data-del="${i}">이 문제 빼기</div>` : ''}</div>`;
   });
   $('bvList').innerHTML = h || '<p style="padding:20px;color:var(--sub)">없어요</p>';
   $('bvList').querySelectorAll('.bv-row').forEach(r => r.onclick = e => {
