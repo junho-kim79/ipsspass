@@ -6,6 +6,11 @@
 <title>ipsiPASS · 우리집 암기장</title>
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#12351F">
+<link rel="manifest" href="/study.webmanifest">
+<link rel="icon" href="/study-icon-192.png">
+<link rel="apple-touch-icon" href="/study-icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="암기장">
 <style>
 :root{--ink:#12351F;--sub:#6B7268;--paper:#F7F3EC;--card:#FFFDF8;--line:#E6DFD1;--acc:#E8560A;--acc2:#FDE7DA;--ok:#1E7A4C;--ok2:#DDF1E5;--gold:#B8912F}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -143,6 +148,7 @@ textarea.fld{min-height:170px;line-height:1.6;resize:vertical}
   <h1>우리집 암기장</h1><p>시험기간 암기 · 본인만 들어갈 수 있어요</p>
   <div class="clock"><span class="d" data-clk="d"></span><span class="t" data-clk="t"></span></div>
   <div class="people" id="people"></div>
+  <button class="ibtn" id="installBtn" style="display:none;margin-top:18px;padding:10px 16px;font-size:.9rem" onclick="doInstall()">📲 휴대폰에 앱으로 설치</button>
   <a class="back" href="./">‹ ipsiPASS로 돌아가기</a>
 </div>
 <!-- 비밀번호 -->
@@ -462,6 +468,12 @@ function addMine() {
   alert(rows.length + '개 추가했어요');
 }
 document.addEventListener('keydown', e => { if (!ME) return; const k = +e.key; if (k >= 1 && k <= 4 && !e.target.closest('input,textarea')) { const b = $('opts').querySelectorAll('button')[k - 1]; if (b) b.click(); } if (e.key === 'Enter' && $('nextBtn').classList.contains('on') && !e.target.closest('input,textarea')) nextQ(); });
+
+/* ───────── 앱으로 설치 (홈 화면에 추가) ───────── */
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredPrompt = e; $('installBtn').style.display = 'inline-block'; });
+async function doInstall() { if (!deferredPrompt) return; deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt = null; $('installBtn').style.display = 'none'; }
+if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('/study-sw.js', { scope: '/study.html' }).catch(() => {}));
 </script>
 </body>
 </html>
